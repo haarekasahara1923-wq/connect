@@ -34,7 +34,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-2xl font-bold tracking-tight text-red-600">
+          <Link href="/" className="text-2xl font-black tracking-tighter text-primary italic">
             InfluencerConnect
           </Link>
           <nav className="hidden md:flex gap-6">
@@ -59,7 +59,7 @@ export function Navbar() {
                 <DropdownMenuTrigger className="relative h-10 w-10 rounded-full focus:outline-none hover:bg-accent hover:text-accent-foreground flex items-center justify-center transition-colors">
                   <Avatar className="h-10 w-10">
                     <AvatarImage src={session.user.image || ''} alt={session.user.name || ''} />
-                    <AvatarFallback className="bg-red-100 text-red-700">
+                    <AvatarFallback className="bg-primary/10 text-primary">
                       {session.user.name?.charAt(0) || 'U'}
                     </AvatarFallback>
                   </Avatar>
@@ -73,7 +73,7 @@ export function Navbar() {
                           {session.user.email}
                         </p>
                       )}
-                      <p className="text-xs uppercase font-semibold text-red-600 mt-1">
+                      <p className="text-xs uppercase font-bold text-primary mt-1 tracking-wider">
                         {session.user.role}
                       </p>
                     </div>
@@ -91,7 +91,7 @@ export function Navbar() {
                 <Link href="/login" className={buttonVariants({ variant: 'ghost' })}>
                   Log in
                 </Link>
-                <Link href="/register" className={cn(buttonVariants({ variant: 'default' }), 'bg-red-600 hover:bg-red-700 text-white')}>
+                <Link href="/register" className={cn(buttonVariants({ variant: 'default' }), 'bg-primary hover:bg-primary/90 text-white rounded-full px-6')}>
                   Register
                 </Link>
               </>
@@ -138,7 +138,7 @@ export function Navbar() {
                       <Link href="/login" className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}>
                         Log in
                       </Link>
-                      <Link href="/register" className={cn(buttonVariants({ variant: 'default' }), 'w-full bg-red-600 hover:bg-red-700 text-white')}>
+                      <Link href="/register" className={cn(buttonVariants({ variant: 'default' }), 'w-full bg-primary hover:bg-primary/90 text-white')}>
                         Register
                       </Link>
                     </>

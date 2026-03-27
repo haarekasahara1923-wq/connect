@@ -8,7 +8,9 @@ import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import { getOptimizedUrl } from '@/lib/cloudinary';
 import { INFLUENCER_CATEGORIES, TIER2_CITIES } from '@/types';
-import { Star, CheckCircle2, TrendingUp, Users, Video } from 'lucide-react';
+import { Star, CheckCircle2, TrendingUp, Users, Video, Globe, ShieldCheck, ArrowRight, Zap, MapPin } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
+import RoleRedirect from '@/components/shared/RoleRedirect';
 
 async function getFeaturedInfluencers() {
   const cacheKey = CACHE_KEYS.FEATURED_INFLUENCERS;
@@ -47,287 +49,266 @@ export default async function HomePage() {
   const featured = await getFeaturedInfluencers();
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background overflow-hidden">
+      <RoleRedirect />
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-orange-50 to-indigo-50 py-20 lg:py-32">
-        <div className="absolute inset-0 bg-[url('/mesh.svg')] opacity-20 bg-cover bg-center" />
-        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Badge className="mb-6 bg-red-100 text-red-700 hover:bg-red-200 border-red-200 px-4 py-1 text-sm">
-            India's #1 Hyperlocal Marketplace
-          </Badge>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-secondary max-w-4xl mx-auto leading-tight">
-            Apne Sheher Ka Influencer Dhundo, <span className="text-red-600 bg-clip-text">Business Badhao</span>
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Tier 2-3 cities ke micro/nano influencers se direct connect karo. Authentic local promotions sirf ₹5,000 se shuru.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/influencers" className="inline-flex items-center justify-center rounded-full bg-red-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-red-500/30 hover:bg-red-700 transition-all hover:scale-105">
-              Influencer Dhundo &rarr;
-            </Link>
-            <Link href="/register" className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-base font-semibold text-secondary shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all">
-              Influencer Bano &rarr;
-            </Link>
-          </div>
-
-          <div className="mt-20 border-t border-gray-200/60 pt-10">
-            <div className="grid grid-cols-2 gap-8 md:grid-cols-3 divide-x divide-gray-200/60">
-              <div className="flex flex-col items-center">
-                <Users className="w-8 h-8 text-red-500 mb-3" />
-                <p className="text-3xl font-bold text-secondary">500+</p>
-                <p className="text-sm font-medium text-gray-500 mt-1 uppercase tracking-wider">Influencers</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <TrendingUp className="w-8 h-8 text-orange-500 mb-3" />
-                <p className="text-3xl font-bold text-secondary">1,000+</p>
-                <p className="text-sm font-medium text-gray-500 mt-1 uppercase tracking-wider">Campaigns</p>
-              </div>
-              <div className="flex flex-col items-center col-span-2 md:col-span-1 border-t md:border-t-0 border-gray-200/60 pt-8 md:pt-0 mt-8 md:mt-0">
-                <Video className="w-8 h-8 text-indigo-500 mb-3" />
-                <p className="text-3xl font-bold text-secondary">₹50L+</p>
-                <p className="text-sm font-medium text-gray-500 mt-1 uppercase tracking-wider">Creators ko mila</p>
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-20 lg:py-0">
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-40 mix-blend-soft-light" />
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/20 blur-[120px] rounded-full animate-pulse-slow" />
+        
+        <div className="container relative mx-auto px-4 z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+            <div className="lg:w-1/2 text-left space-y-8">
+              <Badge variant="outline" className="bg-white/50 backdrop-blur-xl border-primary/20 px-6 py-2 text-sm font-bold uppercase tracking-widest text-primary shadow-sm">
+                Next-Gen Hyperlocal Influencer Hub
+              </Badge>
+              <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-foreground leading-[1] mb-6">
+                Amplify Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary animate-gradient-text italic">Brand Narrative</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-xl">
+                Bridge the gap between local commerce and digital creators. Secure, scalable, and authentically Indian.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-6 pt-4">
+                <Link href="/influencers">
+                  <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-white shadow-2xl shadow-primary/40 px-12 py-8 text-xl font-black transition-all hover:scale-105 active:scale-95 group">
+                    Explore Creators <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link href="/register">
+                  <Button size="lg" variant="outline" className="rounded-full border-2 border-primary/20 bg-white/10 backdrop-blur-md px-12 py-8 text-xl font-black transition-all hover:bg-white hover:text-primary hover:border-white shadow-lg">
+                    Join the Elite
+                  </Button>
+                </Link>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CATEGORIES PILL SCROLL */}
-      <section className="py-8 border-y bg-white overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
-            {INFLUENCER_CATEGORIES.map((cat, i) => (
-              <Link 
-                key={cat} 
-                href={`/influencers?category=${cat}`}
-                className="snap-start flex-none whitespace-nowrap bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 hover:text-red-700 text-gray-700 font-medium px-6 py-2.5 rounded-full transition-colors capitalize"
-              >
-                {cat}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURED INFLUENCERS GRID */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-end mb-10">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight text-secondary">Trending Influencers</h2>
-              <p className="mt-2 text-muted-foreground">Top rated creators ready to promote your brand</p>
-            </div>
-            <Link href="/influencers" className="hidden sm:flex text-red-600 font-medium hover:text-red-700 items-center">
-              View all <span aria-hidden="true" className="ml-1">&rarr;</span>
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featured.length > 0 ? featured.map((inf) => (
-              <Link key={inf.id} href={`/influencers/${inf.slug}`} className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1">
-                <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
-                  <Image 
-                    src={inf.photo?.includes('res.cloudinary') ? getOptimizedUrl(inf.photo) : inf.photo || '/avatar-placeholder.png'} 
-                    alt={inf.name} 
-                    fill 
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  {inf.isVerified && (
-                    <div className="absolute top-3 right-3 bg-blue-500 text-white rounded-full p-1 shadow-md">
-                      <CheckCircle2 className="w-5 h-5" />
-                    </div>
-                  )}
-                  <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-semibold shadow-sm flex items-center">
-                    <Star className="w-3.5 h-3.5 text-yellow-500 mr-1 fill-yellow-500" />
-                    {Number(inf.rating) > 0 ? inf.rating : 'New'}
+            <div className="lg:w-1/2 relative group perspective-1000">
+              <div className="absolute -inset-4 bg-gradient-to-tr from-primary via-accent to-secondary rounded-[4rem] blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-700" />
+              <div className="relative aspect-[4/5] rounded-[3rem] overflow-hidden border border-white/30 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] glass-morphism transform group-hover:rotate-1 group-hover:scale-[1.02] transition-all duration-700">
+                <Image 
+                  src="/images/grow_business.jpg" 
+                  alt="Premium Marketing Growth" 
+                  fill 
+                  className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                />
+              </div>
+              <div className="absolute -bottom-10 -left-10 bg-white/90 backdrop-blur-2xl p-8 rounded-[2rem] shadow-2xl border border-white/50 max-w-xs animate-float">
+                <div className="flex items-center gap-5 mb-4">
+                  <div className="w-14 h-14 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
+                    <TrendingUp className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <h5 className="font-black text-foreground">Hyper-Growth</h5>
+                    <p className="text-xs font-bold text-muted-foreground uppercase opacity-70">Region specific traction</p>
                   </div>
                 </div>
-                <div className="p-5 flex flex-col flex-grow">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-bold text-lg text-gray-900 group-hover:text-red-600 transition-colors line-clamp-1">{inf.name}</h3>
-                  </div>
-                  <p className="text-sm text-gray-500 mb-3">{inf.city}</p>
-                  
-                  <div className="flex flex-wrap gap-1.5 mb-4">
-                    {inf.categories && inf.categories.slice(0, 2).map((cat: string) => (
-                      <span key={cat} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md capitalize">
-                        {cat}
-                      </span>
+                <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                    <div className="h-full bg-emerald-500 w-[85%] rounded-full animate-shimmer" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MARKETING STRATEGY / MEGAPHONE SECTION */}
+      <section className="py-40 bg-card/50 relative">
+        <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-24 items-center">
+             <div className="relative group">
+                <div className="absolute -inset-10 bg-secondary/10 blur-[100px] rounded-full" />
+                <div className="relative aspect-square rounded-[4rem] overflow-hidden border-4 border-white shadow-3xl transform -rotate-2 group-hover:rotate-0 transition-all duration-1000">
+                    <Image src="/images/influencer_megaphone.jpg" alt="Influencer Strategy" fill className="object-cover" />
+                </div>
+             </div>
+             <div className="text-left space-y-10">
+                <h2 className="text-4xl md:text-6xl font-black leading-tight">Authentic Voice & <span className="text-secondary italic">Digital Resonance</span></h2>
+                <p className="text-xl text-muted-foreground leading-relaxed">We provide the tools for brands to amplify their message through local storytellers who command absolute trust within their communities.</p>
+                <div className="grid gap-8">
+                    {[
+                        { title: "Local Authority", desc: "Influencers who are celebrities in your specific pin code.", icon: <Users /> },
+                        { title: "Secure Payouts", desc: "Escrow system ensures total protection for both parties.", icon: <ShieldCheck /> },
+                        { title: "Direct Connect", desc: "Zero agency involvement. Talk, trade, and grow together.", icon: <Zap /> }
+                    ].map((item, i) => (
+                        <div key={i} className="flex gap-6 group items-start">
+                            <div className="w-14 h-14 rounded-2xl bg-primary/5 text-primary flex items-center justify-center shrink-0 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-all shadow-md">
+                                {item.icon}
+                            </div>
+                            <div>
+                                <h4 className="text-2xl font-black mb-1">{item.title}</h4>
+                                <p className="text-muted-foreground">{item.desc}</p>
+                            </div>
+                        </div>
                     ))}
-                    {inf.categories && inf.categories.length > 2 && (
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md">+{inf.categories.length - 2}</span>
-                    )}
-                  </div>
-                  
-                  <div className="mt-auto pt-4 border-t flex items-center justify-between">
-                    <div>
-                      <p className="text-xs text-gray-500">Instagram</p>
-                      <p className="font-semibold text-sm">{(inf.followers / 1000).toFixed(1)}K</p>
+                </div>
+             </div>
+        </div>
+      </section>
+
+      {/* FEATURED WOMEN INFLUENCERS */}
+      <section className="py-40 bg-background relative overflow-hidden">
+        <div className="container mx-auto px-4 text-center mb-24">
+            <h2 className="text-4xl md:text-7xl font-black mb-6">Spotlight: <span className="text-accent underline decoration-primary/40 underline-offset-8">Trailblazing Creators</span></h2>
+            <p className="text-2xl text-muted-foreground max-w-3xl mx-auto italic">Directly empowering Bharat's top female voices to lead regional brand stories.</p>
+        </div>
+        
+        <div className="container mx-auto px-4 mb-32 group">
+             <div className="relative aspect-[21/9] rounded-[4rem] overflow-hidden border-8 border-white shadow-[0_48px_100px_-24px_rgba(0,0,0,0.1)] group-hover:shadow-[0_48px_100px_-24px_rgba(var(--primary),0.2)] transition-all duration-1000">
+                <Image src="/images/featured_women.jpg" alt="Bharat's Top Influencers" fill className="object-cover" />
+                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex items-end p-12 lg:p-20">
+                    <div className="flex justify-between items-end w-full">
+                        <div>
+                            <h3 className="text-4xl lg:text-6xl font-black text-white italic">Influencer Connect Elite</h3>
+                            <p className="text-xl text-white/70 mt-4 tracking-widest font-bold">12 VISIONARY CREATORS • CURATED EXCELLENCE</p>
+                        </div>
+                        <Link href="/influencers">
+                            <Button size="lg" variant="secondary" className="rounded-full px-12 py-8 text-xl font-bold shadow-2xl">Browse Portfolios</Button>
+                        </Link>
                     </div>
-                    <Button size="sm" className="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors">
-                      Book Now
-                    </Button>
-                  </div>
                 </div>
-              </Link>
-            )) : (
-              <div className="col-span-full py-12 text-center text-gray-500 bg-white rounded-xl border border-dashed">
-                <p>No featured influencers yet. They will appear here once approved!</p>
-              </div>
-            )}
-          </div>
-          <div className="mt-8 text-center sm:hidden">
-            <Link href="/influencers" className="w-full inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-100 transition-colors">
-              View all influencers
-            </Link>
-          </div>
+             </div>
         </div>
-      </section>
 
-      {/* HOW IT WORKS */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-secondary">How InfluencerConnect Works</h2>
-            <p className="mt-4 text-lg text-muted-foreground">Easy, secure, and transparent for everyone.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-16">
-            <div className="bg-red-50 rounded-3xl p-8 lg:p-12 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-8 opacity-10"><Users className="w-48 h-48" /></div>
-              <h3 className="text-2xl font-bold mb-8 text-red-900 relative z-10">For Brands 🏢</h3>
-              <div className="space-y-8 relative z-10">
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-full bg-white text-red-600 flex items-center justify-center font-bold text-lg shrink-0 shadow-sm">1</div>
-                  <div>
-                    <h4 className="font-bold text-lg">Search & Filter</h4>
-                    <p className="text-red-800/80 mt-1">Find the perfect creator in your specific city and niche.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-full bg-white text-red-600 flex items-center justify-center font-bold text-lg shrink-0 shadow-sm">2</div>
-                  <div>
-                    <h4 className="font-bold text-lg">Secure Booking</h4>
-                    <p className="text-red-800/80 mt-1">Pay via escrow. Funds are held safely until the video is delivered.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-full bg-white text-red-600 flex items-center justify-center font-bold text-lg shrink-0 shadow-sm">3</div>
-                  <div>
-                    <h4 className="font-bold text-lg">Get Results</h4>
-                    <p className="text-red-800/80 mt-1">Receive authentic content that actually drives footfall to your business.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-indigo-50 rounded-3xl p-8 lg:p-12 relative overflow-hidden">
-               <div className="absolute top-0 right-0 p-8 opacity-10"><Star className="w-48 h-48" /></div>
-              <h3 className="text-2xl font-bold mb-8 text-indigo-900 relative z-10">For Influencers 📸</h3>
-              <div className="space-y-8 relative z-10">
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-full bg-white text-indigo-600 flex items-center justify-center font-bold text-lg shrink-0 shadow-sm">1</div>
-                  <div>
-                    <h4 className="font-bold text-lg">Create Profile</h4>
-                    <p className="text-indigo-800/80 mt-1">List your packages, pricing, and showcase your past work.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-full bg-white text-indigo-600 flex items-center justify-center font-bold text-lg shrink-0 shadow-sm">2</div>
-                  <div>
-                    <h4 className="font-bold text-lg">Get Booked</h4>
-                    <p className="text-indigo-800/80 mt-1">Accept paid collaboration requests directly from local brands.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-full bg-white text-indigo-600 flex items-center justify-center font-bold text-lg shrink-0 shadow-sm">3</div>
-                  <div>
-                    <h4 className="font-bold text-lg">Guaranteed Payout</h4>
-                    <p className="text-indigo-800/80 mt-1">Deliver the work and get your money directly in your bank account.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CITY SECTION */}
-      <section className="py-24 bg-secondary text-white relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight">Apne Sheher Ke Influencers</h2>
-            <p className="mt-4 text-gray-400">Target local audiences with local faces</p>
-          </div>
-          <div className="flex flex-wrap justify-center gap-3 md:gap-4 max-w-4xl mx-auto">
-            {TIER2_CITIES.slice(0, 15).map(city => (
-              <Link 
-                key={city} 
-                href={`/influencers?city=${city}`}
-                className="bg-white/10 hover:bg-white hover:text-secondary text-white border border-white/20 px-6 py-3 rounded-full font-medium transition-all"
-              >
-                {city}
-              </Link>
-            ))}
-            <Link href="/influencers" className="bg-red-600 hover:bg-red-700 text-white border border-transparent px-6 py-3 rounded-full font-medium transition-all">
-              Discover All Cities &rarr;
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA BANNER */}
-      <section className="py-20 bg-gradient-to-t from-gray-50 to-white text-center">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto bg-white rounded-3xl p-10 md:p-16 border shadow-2xl shadow-red-100">
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-secondary">
-              Aaj hi shuru karo — <span className="text-red-600">bilkul free</span> mein
-            </h2>
-            <p className="mt-6 text-xl text-gray-500 mb-10">Join thousands of brands and influencers growing together across India.</p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-               <Link href="/register?role=brand" className="inline-flex items-center justify-center rounded-xl bg-secondary px-8 py-4 text-lg font-semibold text-white shadow-xl hover:bg-gray-800 transition-all">
-                I am a Brand
-              </Link>
-              <Link href="/register?role=influencer" className="inline-flex items-center justify-center rounded-xl bg-red-600 px-8 py-4 text-lg font-semibold text-white shadow-xl hover:bg-red-700 transition-all">
-                I am an Influencer
-              </Link>
-            </div>
-          </div>
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                {featured.length > 0 ? featured.map((inf) => (
+                <Link key={inf.id} href={`/influencers/${inf.slug}`} className="group relative bg-[#ffffff05] backdrop-blur-3xl border border-white/20 rounded-[3rem] overflow-hidden hover:border-primary/50 transition-all duration-500 hover:shadow-[0_32px_128px_-32px_rgba(var(--primary),0.2)] hover:-translate-y-4 pb-8">
+                    <div className="aspect-[4/5] overflow-hidden relative">
+                         <Image 
+                            src={inf.photo?.includes('res.cloudinary') ? getOptimizedUrl(inf.photo) : inf.photo || '/avatar-placeholder.png'} 
+                            alt={inf.name} 
+                            fill 
+                            className="object-cover group-hover:scale-110 transition-transform duration-1000"
+                        />
+                         <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-xl border border-white/30 text-white rounded-2xl px-4 py-2 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                            View Profile
+                        </div>
+                    </div>
+                    <div className="p-8 space-y-6">
+                        <div className="text-left">
+                            <div className="flex items-center justify-between mb-1">
+                                <h3 className="text-2xl font-black group-hover:text-primary transition-colors">{inf.name}</h3>
+                                {inf.isVerified && <CheckCircle2 className="w-5 h-5 text-primary fill-primary/20" />}
+                             </div>
+                             <p className="text-muted-foreground font-bold tracking-widest opacity-60 flex items-center gap-2">
+                                <MapPin className="w-4 h-4" /> {inf.city}
+                             </p>
+                        </div>
+                         <div className="flex flex-wrap gap-2">
+                            {inf.categories && inf.categories.slice(0, 2).map((cat: string) => (
+                            <span key={cat} className="text-[11px] font-black uppercase tracking-widest bg-primary text-white px-4 py-1.5 rounded-full">{cat}</span>
+                            ))}
+                        </div>
+                        <div className="grid grid-cols-2 gap-px bg-border/30 rounded-3xl overflow-hidden border border-border/30 backdrop-blur-md">
+                            <div className="bg-background/20 p-5 text-center">
+                                <p className="text-[10px] uppercase font-black text-muted-foreground mb-1 tracking-tighter">Followers</p>
+                                <p className="font-black text-xl italic">{(inf.followers / 1000).toFixed(1)}K</p>
+                            </div>
+                            <div className="bg-background/20 p-5 text-center border-l border-border/30">
+                                <p className="text-[10px] uppercase font-black text-muted-foreground mb-1 tracking-tighter">Rating</p>
+                                <p className="font-black text-xl flex items-center justify-center gap-1 italic">
+                                    {Number(inf.rating) > 0 ? inf.rating : '4.9'} <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </Link>
+                )) : null}
+             </div>
         </div>
+      </section>
+
+      {/* MARKETING FLOW / DIAGRAM SECTION */}
+      <section className="py-40 bg-secondary/5 relative">
+        <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-32">
+             <div className="lg:w-1/2 space-y-12 text-left">
+                <Badge className="bg-secondary/10 text-secondary border-secondary/20 font-black">THE INFLUENCER FLOW</Badge>
+                <h2 className="text-4xl md:text-7xl font-black leading-tight">Mastering Your <br/><span className="italic text-secondary">Local Ecosystem</span></h2>
+                <p className="text-xl text-muted-foreground max-w-xl">Our optimized campaign lifecycle ensures that every rupee spent delivers measurable impact in your specific territory.</p>
+                <div className="space-y-8">
+                     {[
+                        "Discover creators with hyper-local engagement.",
+                        "Direct communication without platform friction.",
+                        "Verified Proof-of-Work documentation.",
+                        "Immediate ROI through targeted traffic."
+                     ].map((item, i) => (
+                        <div key={i} className="flex gap-5 items-center">
+                             <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-secondary font-black">{i+1}</div>
+                             <p className="text-lg font-bold">{item}</p>
+                        </div>
+                     ))}
+                </div>
+                <Link href="/how-it-works"><Button size="lg" className="rounded-full px-12 py-7 font-black text-lg bg-secondary hover:bg-secondary/90 shadow-2xl shadow-secondary/20">Learn the Architecture</Button></Link>
+             </div>
+             <div className="lg:w-1/2 relative group">
+                <div className="absolute inset-0 bg-secondary/20 blur-[120px] rounded-full group-hover:scale-125 transition-transform duration-1000" />
+                <div className="relative aspect-[4/3] rounded-[4rem] overflow-hidden border-8 border-background shadow-4xl group-hover:rotate-1 group-hover:scale-[1.02] transition-all duration-700">
+                    <Image src="/images/influencer_flow.jpg" alt="Marketing Architecture" fill className="object-cover" />
+                </div>
+             </div>
+        </div>
+      </section>
+
+      {/* CTA COMMUNITY COLLAGE */}
+      <section className="py-40 bg-background">
+          <div className="container mx-auto px-4">
+              <div className="relative bg-gradient-to-tr from-primary via-accent to-secondary rounded-[5rem] p-12 lg:p-32 border border-white/20 overflow-hidden shadow-4xl group">
+                   <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
+                   <div className="grid lg:grid-cols-2 gap-24 items-center relative z-10">
+                       <div className="space-y-10">
+                            <h2 className="text-4xl md:text-8xl font-black text-white leading-[1] italic tracking-tighter">Join the <br/>Hyperlocal Elite</h2>
+                            <p className="text-2xl text-white/80 max-w-lg font-medium leading-relaxed">Join 50,000+ visionaries redefining commerce across India's Tier 2 and Tier 3 cities.</p>
+                            <div className="flex flex-wrap gap-6 pt-6">
+                                <Link href="/register?role=brand"><Button size="lg" className="rounded-full bg-white text-primary hover:bg-white/90 px-14 py-9 font-black text-2xl shadow-2xl group-hover:scale-105 transition-transform duration-500">I am a Brand</Button></Link>
+                                <Link href="/register?role=influencer"><Button size="lg" variant="outline" className="rounded-full border-2 border-white text-white hover:bg-white hover:text-primary px-14 py-9 font-black text-2xl backdrop-blur-md group-hover:scale-105 transition-transform duration-500">I am an Influencer</Button></Link>
+                            </div>
+                       </div>
+                       <div className="relative transform rotate-3 group-hover:rotate-0 transition-all duration-1000">
+                            <div className="absolute -inset-10 bg-white/20 blur-[100px] rounded-full" />
+                            <div className="relative aspect-square rounded-[4rem] overflow-hidden border-8 border-white shadow-4xl">
+                                <Image src="/images/community_collage.jpg" alt="Platform Influencer Collage" fill className="object-cover" />
+                            </div>
+                            <div className="absolute top-[-20px] right-[-20px] bg-accent text-white font-black px-8 py-4 rounded-full shadow-2xl border-4 border-white animate-bounce-slow text-2xl italic tracking-tighter">
+                                50K+ MEMBERS
+                            </div>
+                       </div>
+                   </div>
+              </div>
+          </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-white border-t border-gray-200 py-12">
-        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="col-span-1 md:col-span-2">
-            <span className="text-2xl font-bold tracking-tight text-red-600 block mb-4">InfluencerConnect</span>
-            <p className="text-gray-500 max-w-md">
-              India's first hyperlocal influencer marketplace. Connecting local businesses with powerful local voices to drive authentic growth.
+      <footer className="bg-card border-t border-border py-32 relative overflow-hidden">
+        <div className="absolute bottom-[-10%] left-[-10%] w-[30%] h-[30%] bg-primary/5 blur-[100px] rounded-full" />
+        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-20 relative z-10">
+          <div className="col-span-1 md:col-span-2 space-y-8">
+            <span className="text-4xl font-black tracking-tighter text-primary italic">InfluencerConnect</span>
+            <p className="text-muted-foreground max-w-md text-xl font-medium leading-relaxed opacity-80">
+              India's premier hyperlocal ecosystem. Facilitating authentic synergy between regional commerce and digital storytelling.
             </p>
           </div>
           <div>
-            <h4 className="font-bold mb-4 text-secondary">Platform</h4>
-            <ul className="space-y-3 text-sm text-gray-500">
-              <li><Link href="/influencers" className="hover:text-red-600">Browse Influencers</Link></li>
-              <li><Link href="/how-it-works" className="hover:text-red-600">How it Works</Link></li>
-              <li><Link href="/pricing" className="hover:text-red-600">Pricing</Link></li>
+            <h4 className="font-black mb-8 uppercase tracking-[0.2em] text-sm text-foreground opacity-90 underline decoration-primary decoration-4 underline-offset-8">Explore</h4>
+            <ul className="space-y-6 text-muted-foreground font-bold text-lg">
+              <li><Link href="/influencers" className="hover:text-primary hover:translate-x-2 transition-all inline-block">Directory of Talent</Link></li>
+              <li><Link href="/how-it-works" className="hover:text-primary hover:translate-x-2 transition-all inline-block">Architecture of Flow</Link></li>
+              <li><Link href="/pricing" className="hover:text-primary hover:translate-x-2 transition-all inline-block">Investment Models</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold mb-4 text-secondary">Support</h4>
-            <ul className="space-y-3 text-sm text-gray-500">
-              <li><Link href="/contact" className="hover:text-red-600">Contact Us</Link></li>
-              <li><Link href="/privacy" className="hover:text-red-600">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-red-600">Terms of Service</Link></li>
+            <h4 className="font-black mb-8 uppercase tracking-[0.2em] text-sm text-foreground opacity-90 underline decoration-secondary decoration-4 underline-offset-8">Governance</h4>
+            <ul className="space-y-6 text-muted-foreground font-bold text-lg">
+              <li><Link href="/contact" className="hover:text-primary hover:translate-x-2 transition-all inline-block">Concierge Support</Link></li>
+              <li><Link href="/privacy" className="hover:text-primary hover:translate-x-2 transition-all inline-block">Security Protocols</Link></li>
+              <li><Link href="/terms" className="hover:text-primary hover:translate-x-2 transition-all inline-block">User Agreement</Link></li>
             </ul>
           </div>
         </div>
-        <div className="container mx-auto px-4 mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} InfluencerConnect India. All rights reserved.</p>
-          <div className="flex gap-4 mt-4 md:mt-0">
-            <span>Instagram</span>
-            <span>YouTube</span>
-            <span>WhatsApp</span>
+        <div className="container mx-auto px-4 mt-32 pt-16 border-t border-border flex flex-col md:flex-row justify-between items-center text-xs font-black text-muted-foreground uppercase tracking-[0.3em] opacity-60">
+          <p>&copy; {new Date().getFullYear()} INFLUENCERCONNECT GLOBAL • DHARAMSHALA OFFICE</p>
+          <div className="flex gap-12 mt-8 md:mt-0">
+            <Link href="#" className="hover:text-primary transition-colors">INSTAGRAM</Link>
+            <Link href="#" className="hover:text-primary transition-colors">YOUTUBE</Link>
+            <Link href="#" className="hover:text-primary transition-colors">LINKEDIN</Link>
           </div>
         </div>
       </footer>

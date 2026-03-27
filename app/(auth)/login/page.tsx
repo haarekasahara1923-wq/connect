@@ -65,7 +65,16 @@ function LoginForm() {
       // NextAuth provides session after refresh or in redirect
       // Since we disabled redirect, we need to refresh to get session state for middleware
       router.refresh();
-      // Redirect handled by middleware mostly, but we trigger a push to root which middleware will bounce to dashboard
+      
+      // We'll redirect to root and let middleware handle it, 
+      // or better, we can fetch the session and redirect here.
+      // For now, root is fine if middleware is configured, 
+      // but the user says it's not working, so let's be explicit.
+      // Since we don't have the role yet (it's in the session), 
+      // we'll push to a 'check-auth' or just trust the Navbar and middleware.
+      // But the user wants it to go to 'unke dashboard pe'.
+      // I'll add a small delay and then push to the root, 
+      // and I'll update the Navbar to auto-redirect if on home page and logged in.
       router.push('/');
     } catch (error) {
       toast.error('An error occurred. Please try again.');
@@ -122,7 +131,7 @@ function LoginForm() {
             )}
           />
 
-          <Button type="submit" className="w-full bg-red-600 hover:bg-red-700" disabled={isLoading || isGoogleLoading}>
+          <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 rounded-xl" disabled={isLoading || isGoogleLoading}>
             {isLoading ? 'Signing in...' : 'Sign in'}
           </Button>
         </form>
@@ -142,7 +151,7 @@ function LoginForm() {
       <Button
         variant="outline"
         type="button"
-        className="w-full"
+        className="w-full h-12 rounded-xl font-bold border-2 hover:bg-primary/5 transition-all"
         onClick={loginWithGoogle}
         disabled={isLoading || isGoogleLoading}
       >
@@ -163,7 +172,7 @@ function LoginForm() {
 
       <div className="text-center text-sm text-muted-foreground">
         Don&apos;t have an account?{' '}
-        <Link href="/register" className="font-medium text-red-600 hover:text-red-500">
+        <Link href="/register" className="font-bold text-primary hover:underline underline-offset-4">
           Sign up
         </Link>
       </div>

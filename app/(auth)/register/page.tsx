@@ -108,8 +108,8 @@ export default function RegisterPage() {
                 <FormLabel>I am a...</FormLabel>
                 <div className="flex gap-4">
                   <label
-                    className={`flex-1 flex items-center justify-center p-4 border rounded-lg cursor-pointer transition-all ${
-                      field.value === 'brand' ? 'border-red-600 bg-red-50 text-red-700' : 'border-gray-200 hover:border-gray-300'
+                    className={`flex-1 flex items-center justify-center p-4 border rounded-xl cursor-pointer transition-all ${
+                      field.value === 'brand' ? 'border-primary bg-primary/10 text-primary shadow-inner shadow-primary/20' : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <input
@@ -119,11 +119,11 @@ export default function RegisterPage() {
                       checked={field.value === 'brand'}
                       onChange={() => field.onChange('brand')}
                     />
-                    <span className="font-medium">Brand</span>
+                    <span className="font-bold">I am a Brand</span>
                   </label>
                   <label
-                    className={`flex-1 flex items-center justify-center p-4 border rounded-lg cursor-pointer transition-all ${
-                      field.value === 'influencer' ? 'border-red-600 bg-red-50 text-red-700' : 'border-gray-200 hover:border-gray-300'
+                    className={`flex-1 flex items-center justify-center p-4 border rounded-xl cursor-pointer transition-all ${
+                      field.value === 'influencer' ? 'border-primary bg-primary/10 text-primary shadow-inner shadow-primary/20' : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <input
@@ -133,7 +133,7 @@ export default function RegisterPage() {
                       checked={field.value === 'influencer'}
                       onChange={() => field.onChange('influencer')}
                     />
-                    <span className="font-medium">Influencer</span>
+                    <span className="font-bold">I am a Creator</span>
                   </label>
                 </div>
                 <FormMessage />
@@ -251,7 +251,7 @@ export default function RegisterPage() {
             )}
           />
 
-          <Button type="submit" className="w-full bg-red-600 hover:bg-red-700" disabled={isLoading || isGoogleLoading}>
+          <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 rounded-xl" disabled={isLoading || isGoogleLoading}>
             {isLoading ? 'Creating account...' : 'Create account'}
           </Button>
         </form>
@@ -271,7 +271,7 @@ export default function RegisterPage() {
       <Button
         variant="outline"
         type="button"
-        className="w-full"
+        className="w-full h-12 rounded-xl font-bold border-2 hover:bg-primary/5 transition-all"
         onClick={loginWithGoogle}
         disabled={isLoading || isGoogleLoading}
       >
@@ -292,7 +292,7 @@ export default function RegisterPage() {
 
       <div className="text-center text-sm text-muted-foreground">
         Already have an account?{' '}
-        <Link href="/login" className="font-medium text-red-600 hover:text-red-500">
+        <Link href="/login" className="font-bold text-primary hover:underline underline-offset-4">
           Sign in
         </Link>
       </div>
