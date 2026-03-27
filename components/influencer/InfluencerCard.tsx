@@ -23,7 +23,7 @@ export function InfluencerCard({ inf }: { inf: InfluencerCardProps }) {
       <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
         <Link href={`/influencers/${inf.slug}`}>
           <Image 
-            src={inf.photo?.includes('res.cloudinary') ? getOptimizedUrl(inf.photo) : (inf.photo || '/avatar-placeholder.png')} 
+            src={inf.photo || '/avatar-placeholder.png'} 
             alt={inf.name} 
             fill 
             className="object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer"
