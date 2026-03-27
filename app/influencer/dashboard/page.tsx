@@ -1,7 +1,6 @@
 import { StatsCard } from '@/components/dashboard/StatsCard';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CalendarCheck, Eye, IndianRupee, ListPlus, Search, Star, MessageSquare } from 'lucide-react';
+import { CalendarCheck, Eye, IndianRupee, ListPlus, Star, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
@@ -30,12 +29,16 @@ export default async function InfluencerDashboardPage() {
     <div className="w-full pb-20 lg:pb-0">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">Creator Studio 🎥</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Creator Studio 🎥</h1>
           <p className="text-muted-foreground mt-1 text-sm">Review incoming requests and track your earnings.</p>
         </div>
         <div className="mt-4 sm:mt-0 flex gap-3 w-full sm:w-auto">
-          <Link href="/influencer/services" className="inline-flex items-center justify-center rounded-md border text-sm font-medium h-9 px-4 py-2 flex-1 sm:flex-none hover:bg-gray-100"><ListPlus className="w-4 h-4 mr-2" /> Add Service</Link>
-          <Link href="/influencer/profile" className="inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 flex-1 sm:flex-none text-white">Edit Profile</Link>
+          <Link href="/influencer/services" className="inline-flex items-center justify-center rounded-xl border border-border text-sm font-medium h-9 px-4 py-2 flex-1 sm:flex-none hover:bg-muted transition-colors text-foreground">
+            <ListPlus className="w-4 h-4 mr-2" /> Add Service
+          </Link>
+          <Link href="/influencer/profile" className="inline-flex items-center justify-center rounded-xl text-sm font-medium h-9 px-4 py-2 bg-primary hover:bg-primary/90 flex-1 sm:flex-none text-primary-foreground">
+            Edit Profile
+          </Link>
         </div>
       </div>
 
@@ -43,18 +46,18 @@ export default async function InfluencerDashboardPage() {
          <StatsCard
           title="Total Earned"
           value={`₹${earned}`}
-          icon={<IndianRupee className="w-5 h-5 text-emerald-500" />}
+          icon={<IndianRupee className="w-5 h-5 text-accent" />}
           trend={{ value: 0, isPositive: true }}
         />
         <StatsCard
           title="Active Bookings"
           value={0}
-          icon={<CalendarCheck className="w-5 h-5 text-blue-500" />}
+          icon={<CalendarCheck className="w-5 h-5 text-primary" />}
         />
         <StatsCard
           title="Profile Views"
           value={0}
-          icon={<Eye className="w-5 h-5 text-indigo-500" />}
+          icon={<Eye className="w-5 h-5 text-secondary" />}
         />
         <StatsCard
           title="Average Rating"
@@ -68,16 +71,18 @@ export default async function InfluencerDashboardPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Incoming Requests</CardTitle>
-              <Link href="/influencer/bookings" className="text-sm font-medium text-indigo-600 hover:underline">
+              <Link href="/influencer/bookings" className="text-sm font-medium text-primary hover:underline">
                 View All
               </Link>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500 border-2 border-dashed rounded-lg bg-gray-50">
-                <MessageSquare className="w-12 h-12 text-gray-300 mb-3" />
-                <h3 className="font-semibold text-gray-900 text-lg">You're all caught up!</h3>
+              <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground border-2 border-dashed border-border rounded-xl bg-muted/30">
+                <MessageSquare className="w-12 h-12 text-muted-foreground/40 mb-3" />
+                <h3 className="font-semibold text-foreground text-lg">You're all caught up!</h3>
                 <p className="mt-1 text-sm mb-4">No new collaboration requests right now. Great time to update your portfolio!</p>
-                <Link href="/influencer/media" className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white mt-4">Update Media</Link>
+                <Link href="/influencer/media" className="inline-flex items-center justify-center rounded-xl text-sm font-medium h-10 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground mt-4">
+                  Update Media
+                </Link>
               </div>
             </CardContent>
           </Card>
@@ -88,11 +93,13 @@ export default async function InfluencerDashboardPage() {
               <CardTitle>Ready to withdraw?</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 bg-emerald-50 text-emerald-900 rounded-lg text-center mb-4 border border-emerald-100">
-                <p className="text-xs uppercase tracking-wider font-bold text-emerald-700 mb-1">Available for payout</p>
+              <div className="p-4 bg-primary/5 text-foreground rounded-xl text-center mb-4 border border-primary/10">
+                <p className="text-xs uppercase tracking-wider font-bold text-primary mb-1">Available for payout</p>
                 <p className="text-3xl font-extrabold">₹0.00</p>
               </div>
-              <div className="w-full text-center inline-flex items-center justify-center rounded-md border text-sm font-medium h-10 px-4 py-2 bg-gray-100 text-gray-400 cursor-not-allowed">Request Withdrawal</div>
+              <div className="w-full text-center inline-flex items-center justify-center rounded-xl border text-sm font-medium h-10 px-4 py-2 bg-muted text-muted-foreground cursor-not-allowed">
+                Request Withdrawal
+              </div>
             </CardContent>
           </Card>
         </div>

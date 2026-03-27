@@ -105,7 +105,7 @@ export function Navbar() {
             </SheetTrigger>
             <SheetContent side="right">
               <div className="flex flex-col gap-6 py-4">
-                <Link href="/" className="text-xl font-bold tracking-tight text-red-600">
+                <Link href="/" className="text-xl font-black tracking-tighter text-primary italic">
                   InfluencerConnect
                 </Link>
                 <nav className="flex flex-col gap-4">
