@@ -13,8 +13,9 @@ interface SearchParams {
   maxPrice?: string;
 }
 
-async function InfluencerList({ searchParams }: { searchParams: SearchParams }) {
+async function InfluencerList({ searchParamsPromise }: { searchParamsPromise: Promise<SearchParams> }) {
   // Extract params
+  const searchParams = await searchParamsPromise;
   const { q, category, city } = searchParams;
   
   const categories = typeof category === 'string' ? [category] : category || [];
@@ -72,7 +73,7 @@ async function InfluencerList({ searchParams }: { searchParams: SearchParams }) 
 
 export const dynamic = 'force-dynamic';
 
-export default function InfluencersPage({ searchParams }: { searchParams: SearchParams }) {
+export default async function InfluencersPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   return (
     <div className="bg-gray-50 min-h-screen py-10">
       <div className="container mx-auto px-4">
@@ -107,7 +108,7 @@ export default function InfluencersPage({ searchParams }: { searchParams: Search
                 {[1,2,3,4,5,6].map(i => <div key={i} className="h-80 bg-gray-200 animate-pulse rounded-2xl" />)}
               </div>
             }>
-              <InfluencerList searchParams={searchParams} />
+              <InfluencerList searchParamsPromise={searchParams} />
             </Suspense>
           </div>
         </div>

@@ -12,11 +12,12 @@ import { BookingModal } from '@/components/payment/BookingModal';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
   const [profile] = await db.select({ name: users.name, city: influencerProfiles.city })
     .from(influencerProfiles)
     .innerJoin(users, eq(influencerProfiles.userId, users.id))
-    .where(eq(influencerProfiles.slug, params.slug));
+    .where(eq(influencerProfiles.slug, slug));
 
   if (!profile) return { title: 'Not Found' };
 
@@ -28,7 +29,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export const dynamic = 'force-dynamic';
 
 // Simulated dynamic data fetching
-export default async function InfluencerPublicProfile({ params }: { params: { slug: string } }) {
+export default async function InfluencerPublicProfile({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const [data] = await db
     .select({
       id: influencerProfiles.id,
@@ -56,7 +58,7 @@ export default async function InfluencerPublicProfile({ params }: { params: { sl
     })
     .from(influencerProfiles)
     .innerJoin(users, eq(influencerProfiles.userId, users.id))
-    .where(eq(influencerProfiles.slug, params.slug));
+    .where(eq(influencerProfiles.slug, slug));
 
   if (!data) notFound();
 
