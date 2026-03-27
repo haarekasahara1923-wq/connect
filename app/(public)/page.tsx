@@ -113,7 +113,7 @@ export default async function HomePage() {
       </section>
 
       {/* MARKETING STRATEGY / MEGAPHONE SECTION */}
-      <section className="py-40 bg-card/50 relative">
+      <section className="py-20 bg-card/50 relative">
         <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-24 items-center">
              <div className="relative group">
                 <div className="absolute -inset-10 bg-secondary/10 blur-[100px] rounded-full" />
@@ -146,13 +146,13 @@ export default async function HomePage() {
       </section>
 
       {/* FEATURED WOMEN INFLUENCERS */}
-      <section className="py-40 bg-background relative overflow-hidden">
+      <section className="py-20 bg-background relative overflow-hidden">
         <div className="container mx-auto px-4 text-center mb-24">
             <h2 className="text-4xl md:text-7xl font-black mb-6 leading-[1.1]">Spotlight: <span className="text-accent underline decoration-primary/40 underline-offset-8 pr-2">Trailblazing Creators</span></h2>
             <p className="text-2xl text-muted-foreground max-w-3xl mx-auto italic">Directly empowering Bharat's top female voices to lead regional brand stories.</p>
         </div>
         
-        <div className="container mx-auto px-4 mb-32 group">
+        <div className="container mx-auto px-4 mb-16 group">
              <div className="relative aspect-[21/9] rounded-[4rem] overflow-hidden border-8 border-white shadow-[0_48px_100px_-24px_rgba(0,0,0,0.1)] group-hover:shadow-[0_48px_100px_-24px_rgba(var(--primary),0.2)] transition-all duration-1000">
                 <Image src="/images/featured_women.jpg" alt="Bharat's Top Influencers" fill className="object-cover" />
                 <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex items-end p-12 lg:p-20">
@@ -219,7 +219,7 @@ export default async function HomePage() {
       </section>
 
       {/* MARKETING FLOW / DIAGRAM SECTION */}
-      <section className="py-40 bg-secondary/5 relative">
+      <section className="py-20 bg-secondary/5 relative">
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-32">
              <div className="lg:w-1/2 space-y-12 text-left">
                 <Badge className="bg-secondary/10 text-secondary border-secondary/20 font-black">THE INFLUENCER FLOW</Badge>
@@ -250,7 +250,7 @@ export default async function HomePage() {
       </section>
 
       {/* CTA COMMUNITY COLLAGE */}
-      <section className="py-40 bg-background">
+      <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
               <div className="relative bg-gradient-to-tr from-primary via-accent to-secondary rounded-[5rem] p-12 lg:p-32 border border-white/20 overflow-hidden shadow-4xl group">
                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
@@ -278,7 +278,7 @@ export default async function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-card border-t border-border py-32 relative overflow-hidden">
+      <footer className="bg-card border-t border-border py-16 relative overflow-hidden">
         <div className="absolute bottom-[-10%] left-[-10%] w-[30%] h-[30%] bg-primary/5 blur-[100px] rounded-full" />
         <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-20 relative z-10">
           <div className="col-span-1 md:col-span-2 space-y-8">
