@@ -22,7 +22,8 @@ async function InfluencerList({ searchParams }: { searchParams: SearchParams }) 
 
   // Build Query Conditions
   let conditions = [];
-  conditions.push(eq(influencerProfiles.verificationStatus, 'approved'));
+  // Allow both approved and pending for real-time visibility during development
+  conditions.push(or(eq(influencerProfiles.verificationStatus, 'approved'), eq(influencerProfiles.verificationStatus, 'pending')));
 
   if (q) {
     conditions.push(ilike(users.name, `%${q}%`));
@@ -32,10 +33,6 @@ async function InfluencerList({ searchParams }: { searchParams: SearchParams }) 
     conditions.push(inArray(influencerProfiles.city, cities));
   }
 
-  // Categories need array overlap checking in Postgres, but simple fallback for MVP
-  // If categories filter exists, we will filter in memory because SQLite/MVP Drizzle arrays can be complex.
-  // We'll perform basic filtering via query and advanced filtering via JS for this prompt.
-
   const results = await db
     .select({
       id: influencerProfiles.id,
@@ -44,7 +41,7 @@ async function InfluencerList({ searchParams }: { searchParams: SearchParams }) 
       photo: users.profileImage,
       city: influencerProfiles.city,
       categories: influencerProfiles.categories,
-      followers: influencerProfiles.instagramFollowers,
+      followers: influencerProfiles.totalReach, // Use Total Reach instead of just IG
       rating: influencerProfiles.averageRating,
       isVerified: influencerProfiles.isVerifiedBadge,
     })
