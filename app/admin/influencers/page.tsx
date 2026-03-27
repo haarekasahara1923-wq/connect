@@ -4,7 +4,7 @@ import { eq, desc } from "drizzle-orm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Phone, Mail, Instagram, Youtube, Facebook, Send, MessageCircle, Linkedin, Ghost, Twitter, MessageSquare } from "lucide-react";
+import { MapPin, Phone, Mail, Camera, Video, Users, Send, MessageCircle, MessageSquare, Globe } from "lucide-react";
 import Link from "next/link";
 
 export default async function AdminInfluencersPage() {
@@ -54,9 +54,9 @@ export default async function AdminInfluencersPage() {
                       <span className="text-lg font-black italic tracking-tighter text-foreground group-hover:text-primary transition-colors cursor-pointer">{inf.name}</span>
                       <span className="text-xs font-bold text-muted-foreground mt-1 lowercase opacity-70">ID: {inf.email}</span>
                       <div className="flex gap-2 mt-4">
-                         {(inf.metrics as any)?.instagram?.handle && <Instagram className="w-4 h-4 text-pink-500 opacity-60" />}
-                         {(inf.metrics as any)?.youtube?.handle && <Youtube className="w-4 h-4 text-red-500 opacity-60" />}
-                         {(inf.metrics as any)?.facebook?.handle && <Facebook className="w-4 h-4 text-blue-600 opacity-60" />}
+                         {(inf.metrics as any)?.instagram?.handle && <Camera className="w-4 h-4 text-pink-500 opacity-60" />}
+                         {(inf.metrics as any)?.youtube?.handle && <Video className="w-4 h-4 text-red-500 opacity-60" />}
+                         {(inf.metrics as any)?.facebook?.handle && <Users className="w-4 h-4 text-blue-600 opacity-60" />}
                       </div>
                     </div>
                   </TableCell>
@@ -81,7 +81,7 @@ export default async function AdminInfluencersPage() {
                   </TableCell>
                   <TableCell className="py-8">
                     <div className="flex flex-col gap-3 items-start">
-                        <Badge className={`rounded-lg px-4 py-1 text-[10px] font-black uppercase tracking-widest shadow-none select-none ${inf.status === 'verified' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-orange-50 text-orange-700 border-orange-200'}`}>
+                        <Badge className={`rounded-lg px-4 py-1 text-[10px] font-black uppercase tracking-widest shadow-none select-none ${inf.status === 'approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-orange-50 text-orange-700 border-orange-200'}`}>
                             {inf.status}
                         </Badge>
                         <Link href={`/influencers/${inf.slug}`} target="_blank">
