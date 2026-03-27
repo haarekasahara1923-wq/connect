@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { db } from '@/lib/db';
 import { influencerProfiles, users } from '@/lib/db/schema';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, or } from 'drizzle-orm';
 import { getCached, setCache, CACHE_KEYS } from '@/lib/redis';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
