@@ -46,7 +46,7 @@ const profileSchema = z.object({
   snapchatHandle: z.string().optional().or(z.literal('')),
   xHandle: z.string().optional().or(z.literal('')),
   threadsHandle: z.string().optional().or(z.literal('')),
-  socialMetrics: z.record(z.object({
+  socialMetrics: z.record(z.string(), z.object({
     followers: z.coerce.number().default(0),
     views: z.coerce.number().default(0),
     likes: z.coerce.number().default(0),
