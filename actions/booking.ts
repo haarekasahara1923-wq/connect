@@ -3,7 +3,7 @@
 import { db } from '@/lib/db';
 import { bookings, brandProfiles, influencerProfiles, payouts, walletTransactions } from '@/lib/db/schema';
 import { auth } from '@/lib/auth';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { calculatePricing } from '@/lib/razorpay';
 
