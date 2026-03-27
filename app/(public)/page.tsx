@@ -63,8 +63,9 @@ export default async function HomePage() {
               <Badge variant="outline" className="bg-white/50 backdrop-blur-xl border-primary/20 px-6 py-2 text-sm font-bold uppercase tracking-widest text-primary shadow-sm">
                 Next-Gen Hyperlocal Influencer Hub
               </Badge>
-              <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-foreground leading-[1] mb-6">
-                Amplify Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary animate-gradient-text italic">Brand Narrative</span>
+              <h1 className="text-5xl md:text-8xl font-black tracking-tight text-foreground leading-[1.3] mb-6 py-4">
+                Amplify Your <br className="md:hidden" />
+                <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary animate-gradient-text italic decoration-clone px-8 py-2 -mx-8 -my-2 transform-gpu">Brand Narrative</span>
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-xl">
                 Bridge the gap between local commerce and digital creators. Secure, scalable, and authentically Indian.
@@ -121,7 +122,7 @@ export default async function HomePage() {
                 </div>
              </div>
              <div className="text-left space-y-10">
-                <h2 className="text-4xl md:text-6xl font-black leading-tight">Authentic Voice & <span className="text-secondary italic">Digital Resonance</span></h2>
+                <h2 className="text-4xl md:text-6xl font-black leading-[1.1] mb-2">Authentic Voice & <span className="text-secondary italic pr-2">Digital Resonance</span></h2>
                 <p className="text-xl text-muted-foreground leading-relaxed">We provide the tools for brands to amplify their message through local storytellers who command absolute trust within their communities.</p>
                 <div className="grid gap-8">
                     {[
@@ -147,7 +148,7 @@ export default async function HomePage() {
       {/* FEATURED WOMEN INFLUENCERS */}
       <section className="py-40 bg-background relative overflow-hidden">
         <div className="container mx-auto px-4 text-center mb-24">
-            <h2 className="text-4xl md:text-7xl font-black mb-6">Spotlight: <span className="text-accent underline decoration-primary/40 underline-offset-8">Trailblazing Creators</span></h2>
+            <h2 className="text-4xl md:text-7xl font-black mb-6 leading-[1.1]">Spotlight: <span className="text-accent underline decoration-primary/40 underline-offset-8 pr-2">Trailblazing Creators</span></h2>
             <p className="text-2xl text-muted-foreground max-w-3xl mx-auto italic">Directly empowering Bharat's top female voices to lead regional brand stories.</p>
         </div>
         
@@ -222,7 +223,7 @@ export default async function HomePage() {
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-32">
              <div className="lg:w-1/2 space-y-12 text-left">
                 <Badge className="bg-secondary/10 text-secondary border-secondary/20 font-black">THE INFLUENCER FLOW</Badge>
-                <h2 className="text-4xl md:text-7xl font-black leading-tight">Mastering Your <br/><span className="italic text-secondary">Local Ecosystem</span></h2>
+                <h2 className="text-4xl md:text-7xl font-black leading-[1.1]">Mastering Your <br/><span className="italic text-secondary pr-4">Local Ecosystem</span></h2>
                 <p className="text-xl text-muted-foreground max-w-xl">Our optimized campaign lifecycle ensures that every rupee spent delivers measurable impact in your specific territory.</p>
                 <div className="space-y-8">
                      {[
@@ -255,7 +256,7 @@ export default async function HomePage() {
                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
                    <div className="grid lg:grid-cols-2 gap-24 items-center relative z-10">
                        <div className="space-y-10">
-                            <h2 className="text-4xl md:text-8xl font-black text-white leading-[1] italic tracking-tighter">Join the <br/>Hyperlocal Elite</h2>
+                            <h2 className="text-4xl md:text-8xl font-black text-white leading-[1.1] italic tracking-tight pr-4">Join the <br/>Hyperlocal Elite</h2>
                             <p className="text-2xl text-white/80 max-w-lg font-medium leading-relaxed">Join 50,000+ visionaries redefining commerce across India's Tier 2 and Tier 3 cities.</p>
                             <div className="flex flex-wrap gap-6 pt-6">
                                 <Link href="/register?role=brand"><Button size="lg" className="rounded-full bg-white text-primary hover:bg-white/90 px-14 py-9 font-black text-2xl shadow-2xl group-hover:scale-105 transition-transform duration-500">I am a Brand</Button></Link>
