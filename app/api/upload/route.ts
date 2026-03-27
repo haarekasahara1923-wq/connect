@@ -23,8 +23,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
   }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const result = await uploadImage(buffer, folder);
-
-  return NextResponse.json(result);
+  try {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const result = await uploadImage(buffer, folder);
+    return NextResponse.json(result);
+  } catch (error: any) {
+    console.error('Upload Error:', error);
+    return NextResponse.json({ error: error.message || 'Cloudinary upload failed' }, { status: 500 });
+  }
 }

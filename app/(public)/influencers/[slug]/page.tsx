@@ -40,11 +40,16 @@ export default async function InfluencerPublicProfile({ params }: { params: { sl
       bio: influencerProfiles.bio,
       categories: influencerProfiles.categories,
       languages: influencerProfiles.languages,
-      igFollowers: influencerProfiles.instagramFollowers,
       igHandle: influencerProfiles.instagramHandle,
-      ytSubscribers: influencerProfiles.youtubeSubscribers,
       ytHandle: influencerProfiles.youtubeHandle,
-      fbFollowers: influencerProfiles.facebookFollowers,
+      fbHandle: influencerProfiles.facebookHandle,
+      tgHandle: influencerProfiles.telegramHandle,
+      waHandle: influencerProfiles.whatsappChannelHandle,
+      liHandle: influencerProfiles.linkedinHandle,
+      scHandle: influencerProfiles.snapchatHandle,
+      xHandle: influencerProfiles.xHandle,
+      trHandle: influencerProfiles.threadsHandle,
+      socialMetrics: influencerProfiles.socialMetrics,
       rating: influencerProfiles.averageRating,
       isVerified: influencerProfiles.isVerifiedBadge,
       totalReach: influencerProfiles.totalReach,
@@ -57,6 +62,20 @@ export default async function InfluencerPublicProfile({ params }: { params: { sl
 
   // Fetch Services
   const offeredServices = await db.select().from(services).where(and(eq(services.influencerId, data.id), eq(services.isActive, true)));
+
+  const platforms = [
+    { id: 'instagram', label: 'Instagram', icon: '📸', handle: data.igHandle },
+    { id: 'youtube', label: 'YouTube', icon: '📺', handle: data.ytHandle },
+    { id: 'facebook', label: 'Facebook', icon: '👥', handle: data.fbHandle },
+    { id: 'telegram', label: 'Telegram', icon: '✈️', handle: data.tgHandle },
+    { id: 'whatsapp', label: 'WhatsApp', icon: '💬', handle: data.waHandle },
+    { id: 'linkedin', label: 'LinkedIn', icon: '💼', handle: data.liHandle },
+    { id: 'snapchat', label: 'Snapchat', icon: '👻', handle: data.scHandle },
+    { id: 'x', label: 'X (Twitter)', icon: '𝕏', handle: data.xHandle },
+    { id: 'threads', label: 'Threads', icon: '🧵', handle: data.trHandle },
+  ].filter(p => !!p.handle);
+
+  const metrics = (data.socialMetrics as any) || {};
 
   return (
     <div className="bg-gray-50 min-h-screen pb-24">
@@ -72,11 +91,11 @@ export default async function InfluencerPublicProfile({ params }: { params: { sl
       </div>
 
       <div className="container mx-auto px-4 -mt-20 relative z-10 max-w-5xl">
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-          <div className="p-6 md:p-10">
-            <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-start md:items-center">
+        <div className="bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-white/20 backdrop-blur-3xl">
+          <div className="p-8 md:p-12 lg:p-16">
+            <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start md:items-center">
               {/* Profile Photo over Cover */}
-              <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-white overflow-hidden shadow-lg bg-white shrink-0 -mt-16 md:-mt-24">
+              <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-[3rem] border-8 border-white overflow-hidden shadow-2xl bg-white shrink-0 -mt-24 md:-mt-32 transform rotate-3 group hover:rotate-0 transition-all duration-700">
                 <Image 
                   src={data.photo?.includes('res.cloudinary') ? getOptimizedUrl(data.photo, 400, 400) : (data.photo || '/avatar-placeholder.png')} 
                   alt={data.name || ''} 
@@ -86,64 +105,74 @@ export default async function InfluencerPublicProfile({ params }: { params: { sl
               </div>
 
               {/* Header Info */}
-              <div className="flex-1">
-                <div className="flex flex-col md:flex-row gap-4 md:items-center justify-between">
+              <div className="flex-1 space-y-4">
+                <div className="flex flex-col md:flex-row gap-6 md:items-end justify-between">
                   <div>
-                    <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 flex items-center gap-2">
+                    <h1 className="text-4xl md:text-6xl font-black text-gray-900 flex items-center gap-3 italic tracking-tighter">
                        {data.name}
-                       {data.isVerified && <CheckCircle2 className="text-blue-500 w-8 h-8" />}
+                       {data.isVerified && <CheckCircle2 className="text-blue-500 w-10 h-10" />}
                     </h1>
-                    <div className="flex items-center text-gray-500 mt-2 font-medium">
-                      <MapPin className="w-4 h-4 mr-1" />
+                    <div className="flex items-center text-muted-foreground mt-2 font-bold italic tracking-tight">
+                      <MapPin className="w-5 h-5 mr-1.5 text-red-500" />
                       {data.city}, {data.state}
                     </div>
                   </div>
                   <Link href="#services">
-                    <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white rounded-full text-lg px-8 shadow-xl shadow-red-600/20">
-                      View Services
+                    <Button size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-2xl text-xl font-black italic px-10 h-16 shadow-2xl shadow-primary/20">
+                      Explore Services
                     </Button>
                   </Link>
                 </div>
 
-                <div className="flex flex-wrap gap-2 mt-4">
+                <div className="flex flex-wrap gap-2 mt-6">
                   {data.categories && (data.categories as string[]).map(cat => (
-                    <Badge key={cat} variant="secondary" className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100">{cat}</Badge>
+                    <Badge key={cat} variant="secondary" className="bg-primary/5 text-primary border-primary/10 px-4 py-1 font-bold text-xs uppercase tracking-widest">{cat}</Badge>
                   ))}
                   {data.languages && (data.languages as string[]).map(lang => (
-                    <Badge key={lang} variant="outline" className="text-gray-500">{lang}</Badge>
+                    <Badge key={lang} variant="outline" className="text-muted-foreground border-border px-4 py-1 font-bold text-xs uppercase tracking-widest">{lang}</Badge>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Social Stats Strip */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 p-6 bg-gray-50 rounded-2xl border border-gray-100">
-               <div className="flex flex-col items-center justify-center p-2 text-center border-r border-gray-200">
-                  <div className="text-pink-600 mb-2"><Camera className="w-6 h-6" /></div>
-                  <span className="text-2xl font-bold text-gray-900">{((data.igFollowers || 0) / 1000).toFixed(1)}K</span>
-                  <span className="text-xs text-gray-500 uppercase tracking-widest font-semibold mt-1">Instagram</span>
-               </div>
-               <div className="flex flex-col items-center justify-center p-2 text-center md:border-r border-gray-200">
-                  <div className="text-red-600 mb-2"><Video className="w-6 h-6" /></div>
-                  <span className="text-2xl font-bold text-gray-900">{((data.ytSubscribers || 0) / 1000).toFixed(1)}K</span>
-                  <span className="text-xs text-gray-500 uppercase tracking-widest font-semibold mt-1">YouTube</span>
-               </div>
-               <div className="flex flex-col items-center justify-center p-2 text-center border-r border-gray-200">
-                  <div className="text-blue-600 mb-2"><Users className="w-6 h-6" /></div>
-                  <span className="text-2xl font-bold text-gray-900">{((data.fbFollowers || 0) / 1000).toFixed(1)}K</span>
-                  <span className="text-xs text-gray-500 uppercase tracking-widest font-semibold mt-1">Facebook</span>
-               </div>
-               <div className="flex flex-col items-center justify-center p-2 text-center relative overflow-hidden">
-                  <span className="text-3xl font-extrabold text-indigo-600">{((data.totalReach || 0) / 1000).toFixed(1)}K+</span>
-                  <span className="text-xs text-indigo-600 uppercase tracking-widest font-bold mt-1">Total Reach</span>
-               </div>
+            {/* Global Reach Highlight */}
+            <div className="mt-16 p-10 bg-gradient-to-tr from-primary/5 to-secondary/5 rounded-[2.5rem] border border-primary/10 flex flex-col items-center justify-center text-center">
+                <h3 className="text-sm font-black uppercase tracking-[0.3em] text-primary/60 mb-2">Authenticated Global Reach</h3>
+                <span className="text-6xl md:text-8xl font-black italic tracking-tighter text-primary">{((data.totalReach || 0) / 1000).toFixed(1)}K+</span>
+                <p className="text-muted-foreground font-bold italic mt-2 italic px-2">Aggregated active nodes across the influencer ecosystem.</p>
+            </div>
+
+            {/* Social Ecosystem Footprint Grid */}
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {platforms.map((plat) => (
+                    <div key={plat.id} className="bg-white p-6 rounded-[2rem] border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group">
+                         <div className="flex items-center justify-between mb-4">
+                            <span className="text-2xl grayscale group-hover:grayscale-0 transition-all">{plat.icon}</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60 italic">{plat.label}</span>
+                         </div>
+                         <div className="grid grid-cols-2 gap-y-4">
+                            <div>
+                                <p className="text-[9px] font-black opacity-50 uppercase tracking-tighter">Followers</p>
+                                <p className="text-xl font-black italic text-gray-900 tracking-tight">
+                                    {(metrics[plat.id]?.followers / 1000).toFixed(1) || '0.0'}K
+                                </p>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-[9px] font-black opacity-50 uppercase tracking-tighter">Views</p>
+                                <p className="text-xl font-black italic text-gray-900 tracking-tight">
+                                    {(metrics[plat.id]?.views / 1000).toFixed(1) || '0.0'}K
+                                </p>
+                            </div>
+                         </div>
+                    </div>
+                ))}
             </div>
 
             {/* Bio Section */}
             {data.bio && (
-              <div className="mt-10">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">About Me</h3>
-                <p className="text-gray-600 leading-relaxed text-lg">{data.bio}</p>
+              <div className="mt-16 p-10 bg-white border border-border/50 rounded-[2.5rem]">
+                <h3 className="text-2xl font-black text-gray-900 mb-4 italic tracking-tighter uppercase underline decoration-primary/20 decoration-4 underline-offset-8">Synergy Pitch</h3>
+                <p className="text-muted-foreground font-medium leading-relaxed text-xl italic">{data.bio}</p>
               </div>
             )}
           </div>

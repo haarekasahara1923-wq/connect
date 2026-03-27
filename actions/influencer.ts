@@ -20,8 +20,17 @@ const updateProfileSchema = z.object({
   youtubeSubscribers: z.coerce.number().min(0).optional(),
   facebookHandle: z.string().optional(),
   facebookFollowers: z.coerce.number().min(0).optional(),
+  telegramHandle: z.string().optional(),
+  whatsappNumber: z.string().optional(),
+  whatsappChannelHandle: z.string().optional(),
+  linkedinHandle: z.string().optional(),
+  snapchatHandle: z.string().optional(),
+  xHandle: z.string().optional(),
+  threadsHandle: z.string().optional(),
+  address: z.string().optional(),
+  socialMetrics: z.any().optional(),
   coverImage: z.string().optional(),
-  profilePhoto: z.string().optional(), // We'll update users table for this
+  profilePhoto: z.string().optional(), 
 });
 
 export async function getMyProfile() {
@@ -58,6 +67,15 @@ export async function updateProfile(formData: {
   youtubeSubscribers?: number;
   facebookHandle?: string;
   facebookFollowers?: number;
+  telegramHandle?: string;
+  whatsappNumber?: string;
+  whatsappChannelHandle?: string;
+  linkedinHandle?: string;
+  snapchatHandle?: string;
+  xHandle?: string;
+  threadsHandle?: string;
+  address?: string;
+  socialMetrics?: any;
   coverImage?: string;
   profilePhoto?: string;
 }) {
@@ -93,6 +111,15 @@ export async function updateProfile(formData: {
         youtubeSubscribers: data.youtubeSubscribers,
         facebookHandle: data.facebookHandle,
         facebookFollowers: data.facebookFollowers,
+        telegramHandle: data.telegramHandle,
+        whatsappNumber: data.whatsappNumber,
+        whatsappChannelHandle: data.whatsappChannelHandle,
+        linkedinHandle: data.linkedinHandle,
+        snapchatHandle: data.snapchatHandle,
+        xHandle: data.xHandle,
+        threadsHandle: data.threadsHandle,
+        address: data.address,
+        socialMetrics: data.socialMetrics,
         coverImage: data.coverImage,
         totalReach: (data.instagramFollowers || 0) + (data.youtubeSubscribers || 0) + (data.facebookFollowers || 0),
         updatedAt: new Date(),

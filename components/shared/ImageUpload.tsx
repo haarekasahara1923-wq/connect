@@ -38,14 +38,21 @@ export function ImageUpload({ onUpload, defaultImage, folder = 'general' }: Imag
         method: 'POST',
         body: formData,
       });
-      const data = await res.json();
+
+      const contentType = res.headers.get('content-type');
+      let data: any = {};
+      if (contentType?.includes('application/json')) {
+        data = await res.json();
+      } else {
+        throw new Error(`Upload Server Error (${res.status}). Check Cloudinary configs.`);
+      }
 
       if (!res.ok) throw new Error(data.error || 'Upload failed');
       
       onUpload(data.url);
-      toast.success('Image uploaded successfully');
+      toast.success('Sync complete! Image uploaded.');
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error.message || 'Verification failed');
       setPreview(defaultImage || null);
     } finally {
       setIsUploading(false);
