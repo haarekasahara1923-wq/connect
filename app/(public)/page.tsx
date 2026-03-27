@@ -178,7 +178,7 @@ export default async function HomePage() {
                 <Link key={inf.id} href={`/influencers/${inf.slug}`} className="group relative bg-[#ffffff05] backdrop-blur-3xl border border-white/20 rounded-[3rem] overflow-hidden hover:border-primary/50 transition-all duration-500 hover:shadow-[0_32px_128px_-32px_rgba(var(--primary),0.2)] hover:-translate-y-4 pb-8">
                     <div className="aspect-[4/5] overflow-hidden relative">
                          <Image 
-                            src={inf.photo || '/avatar-placeholder.png'} 
+                            src={inf.photo || 'https://ui-avatars.com/api/?name=Influencer&background=F3F4F6&color=4B5563'} 
                             alt={inf.name} 
                             fill 
                             className="object-cover group-hover:scale-110 transition-transform duration-1000"

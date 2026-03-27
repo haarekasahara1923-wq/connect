@@ -82,7 +82,7 @@ export default async function InfluencerPublicProfile({ params }: { params: { sl
       {/* Top Cover Banner */}
       <div className="w-full h-64 md:h-96 relative bg-gray-200">
         <Image 
-          src={data.cover || '/mesh.svg'} 
+          src={data.cover || 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2000&auto=format&fit=crop'} 
           alt="Cover" 
           fill 
           className="object-cover"
@@ -97,7 +97,7 @@ export default async function InfluencerPublicProfile({ params }: { params: { sl
               {/* Profile Photo over Cover */}
               <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-[3rem] border-8 border-white overflow-hidden shadow-2xl bg-white shrink-0 -mt-24 md:-mt-32 transform rotate-3 group hover:rotate-0 transition-all duration-700">
                 <Image 
-                  src={data.photo || '/avatar-placeholder.png'} 
+                  src={data.photo || 'https://ui-avatars.com/api/?name=Influencer&background=F3F4F6&color=4B5563'} 
                   alt={data.name || ''} 
                   fill 
                   className="object-cover"

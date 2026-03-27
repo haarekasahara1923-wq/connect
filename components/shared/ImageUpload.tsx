@@ -69,8 +69,12 @@ export function ImageUpload({ onUpload, defaultImage, folder = 'general' }: Imag
   return (
     <div className="w-full">
       {preview ? (
-        <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200">
-          <Image src={preview} alt="Upload preview" fill className="object-cover" />
+        <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200 bg-muted/20">
+          <img 
+            src={preview} 
+            alt="Upload preview" 
+            className="w-full h-full object-cover" 
+          />
           <button
             type="button"
             onClick={() => { setPreview(null); onUpload(''); }}
