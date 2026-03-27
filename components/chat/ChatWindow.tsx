@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import ZIM from 'zego-zim-web';
+import { ZIM } from 'zego-zim-web';
 import { Send, Loader2, ArrowLeft } from 'lucide-react';
 import { VideoCallButton } from './VideoCallButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -42,10 +42,11 @@ export function ChatWindow({ bookingId, receiverId, receiverName, receiverImage 
       if (!appId) return;
 
       // 2. Initialize ZIM
-      const zim = ZIM.create({ appID: appId });
+      const zim = ZIM.getInstance() || ZIM.create({ appID: appId });
+      if (!zim) return;
       
       // 3. Set event handlers
-      zim.on('receivePeerMessage', (zimInstance: any, { messageList }: any) => {
+      zim.on('peerMessageReceived', (zimInstance: any, { messageList }: any) => {
         const newMsgs = messageList.map((m: any) => ({
           senderId: m.senderUserID,
           content: m.message,
