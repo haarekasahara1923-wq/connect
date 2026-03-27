@@ -41,11 +41,13 @@ export function BookingModal({ service, influencerId }: BookingModalProps) {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button className="w-full bg-red-600 hover:bg-red-700 text-white rounded-full text-lg px-8 shadow-xl shadow-red-600/20">
-          Book This Service
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button className="w-full bg-red-600 hover:bg-red-700 text-white rounded-full text-lg px-8 shadow-xl shadow-red-600/20">
+            Book This Service
+          </Button>
+        }
+      />
       <DialogContent className="sm:max-w-[500px] border-none shadow-2xl p-0 overflow-hidden bg-white">
         <DialogHeader className="bg-gradient-to-br from-red-50 to-orange-50 p-6 md:p-8">
           <DialogTitle className="text-2xl font-black text-gray-900 flex items-center gap-2">
