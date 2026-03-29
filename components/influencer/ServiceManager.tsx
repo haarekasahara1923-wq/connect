@@ -107,7 +107,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest opacity-60 italic">Service Type</label>
-                  <Select onValueChange={(v) => setFormData({...formData, serviceType: v})} defaultValue={formData.serviceType}>
+                  <Select onValueChange={(v) => setFormData({...formData, serviceType: v || 'instagram_reel'})} defaultValue={formData.serviceType}>
                     <SelectTrigger className="rounded-2xl border-black/10 h-12 font-bold italic"><SelectValue /></SelectTrigger>
                     <SelectContent className="rounded-2xl">
                         <SelectItem value="instagram_reel">Instagram Reel</SelectItem>
