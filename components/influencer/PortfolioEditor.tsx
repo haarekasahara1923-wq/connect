@@ -8,6 +8,8 @@ import { Trash2, Film, ImageIcon, Loader2, Play } from 'lucide-react';
 import { updatePortfolio } from '@/actions/influencer';
 import { toast } from 'sonner';
 import Image from 'next/image';
+import { MediaLightbox } from '@/components/shared/MediaLightbox';
+import { Maximize2 } from 'lucide-react';
 
 interface PortfolioEditorProps {
   initialImages: string[];
@@ -85,19 +87,28 @@ export function PortfolioEditor({ initialImages, initialVideos }: PortfolioEdito
 
            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {images.map((url, idx) => (
-                <div key={idx} className="relative aspect-square rounded-3xl overflow-hidden group border border-black/5 shadow-sm hover:shadow-xl transition-all duration-500">
-                   <Image src={url} alt="Portfolio" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                   <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform">
-                      <Button 
-                        size="sm" 
-                        variant="destructive" 
-                        onClick={() => removeImage(idx)}
-                        className="rounded-2xl w-full h-10 font-black italic shadow-lg"
-                      >
-                         <Trash2 className="w-4 h-4 mr-2" /> Unlink node
-                      </Button>
-                   </div>
-                </div>
+                 <MediaLightbox 
+                    key={idx} 
+                    mediaUrl={url} 
+                    trigger={
+                      <div className="relative aspect-square rounded-3xl overflow-hidden group border border-black/5 shadow-sm hover:shadow-xl transition-all duration-500">
+                        <Image src={url} alt="Portfolio" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                           <Maximize2 className="text-white w-8 h-8" />
+                        </div>
+                        <div className="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform flex justify-center">
+                            <Button 
+                              size="sm" 
+                              variant="destructive" 
+                              onClick={(e) => { e.stopPropagation(); removeImage(idx); }}
+                              className="rounded-2xl w-full h-8 font-black italic shadow-lg text-[10px]"
+                            >
+                               <Trash2 className="w-3 h-3 mr-1" /> Unlink
+                            </Button>
+                        </div>
+                      </div>
+                    }
+                 />
               ))}
               <div className="aspect-square bg-muted/20 border-2 border-dashed border-primary/20 rounded-3xl flex items-center justify-center p-4 text-center hover:bg-muted/30 transition-colors">
                  <div className="w-full h-full flex flex-col items-center justify-center gap-2">
@@ -117,19 +128,31 @@ export function PortfolioEditor({ initialImages, initialVideos }: PortfolioEdito
            
            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {videos.map((url, idx) => (
-                <div key={idx} className="relative aspect-video rounded-3xl overflow-hidden group border border-black/5 shadow-sm hover:shadow-xl transition-all duration-500 bg-black">
-                   <video src={url} className="w-full h-full object-cover" controls={false} muted autoPlay loop />
-                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <Button 
-                        size="sm" 
-                        variant="destructive" 
-                        onClick={() => removeVideo(idx)}
-                        className="rounded-2xl h-10 px-6 font-black italic shadow-lg"
-                      >
-                         <Trash2 className="w-4 h-4 mr-2" /> Purge Motion Node
-                      </Button>
-                   </div>
-                </div>
+                 <MediaLightbox 
+                    key={idx} 
+                    mediaUrl={url} 
+                    isVideo
+                    trigger={
+                      <div className="relative aspect-video rounded-3xl overflow-hidden group border border-black/5 shadow-sm hover:shadow-2xl transition-all duration-500 bg-black">
+                        <video src={url} className="w-full h-full object-cover" controls={false} muted autoPlay loop />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-all">
+                           <div className="w-14 h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform">
+                              <Play className="text-white fill-white w-6 h-6 ml-0.5" />
+                           </div>
+                        </div>
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Button 
+                              size="icon" 
+                              variant="destructive" 
+                              onClick={(e) => { e.stopPropagation(); removeVideo(idx); }}
+                              className="rounded-xl w-10 h-10 shadow-lg"
+                            >
+                               <Trash2 className="w-4 h-4" />
+                            </Button>
+                        </div>
+                      </div>
+                    }
+                 />
               ))}
               <div className="aspect-video bg-muted/20 border-2 border-dashed border-secondary/20 rounded-3xl flex items-center justify-center p-4 text-center hover:bg-muted/30 transition-colors">
                  <div className="w-full h-full flex flex-col items-center justify-center gap-2">

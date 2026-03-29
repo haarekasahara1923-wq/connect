@@ -36,34 +36,54 @@ export function ImageUpload({ onUpload, defaultImage, folder = 'general' }: Imag
     }
 
     setIsUploading(true);
+    const isVideo = file.type.startsWith('video/');
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
-    setShowVideo(file.type.startsWith('video/'));
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('folder', folder);
+    setShowVideo(isVideo);
 
     try {
-      const res = await fetch('/api/upload', {
+      // 1. Get Signature from our API
+      const timestamp = Math.round(new Date().getTime() / 1000);
+      const paramsToSign = {
+        timestamp,
+        folder: `influencer-connect/${folder}`,
+      };
+
+      const signRes = await fetch('/api/upload/sign', {
+        method: 'POST',
+        body: JSON.stringify({ paramsToSign }),
+      });
+      const { signature, cloudName, apiKey, error: signError } = await signRes.json();
+
+      if (signError) throw new Error(signError);
+
+      // 2. Upload directly to Cloudinary
+      const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/${isVideo ? 'video' : 'image'}/upload`;
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('signature', signature);
+      formData.append('timestamp', timestamp.toString());
+      formData.append('api_key', apiKey || '');
+      formData.append('folder', `influencer-connect/${folder}`);
+
+      const uploadRes = await fetch(cloudinaryUrl, {
         method: 'POST',
         body: formData,
       });
 
-      const contentType = res.headers.get('content-type');
-      let data: any = {};
-      if (contentType?.includes('application/json')) {
-        data = await res.json();
-      } else {
-        throw new Error(`Upload Server Error (${res.status}).`);
+      if (!uploadRes.ok) {
+        const errData = await uploadRes.json();
+        throw new Error(errData.error?.message || 'Cloudinary upload failed');
       }
 
-      if (!res.ok) throw new Error(data.error || 'Upload failed');
+      const data = await uploadRes.json();
       
-      onUpload(data.url);
-      if (data.url.includes('/video/upload/')) setShowVideo(true);
+      onUpload(data.secure_url);
+      if (data.secure_url.includes('/video/upload/')) setShowVideo(true);
       toast.success('Sync complete! Media uploaded.');
     } catch (error: any) {
+      console.error('Upload Error:', error);
       toast.error(error.message || 'Verification failed');
       setPreview(defaultImage || null);
     } finally {

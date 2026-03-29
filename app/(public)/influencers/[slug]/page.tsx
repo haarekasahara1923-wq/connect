@@ -11,6 +11,8 @@ import { CheckCircle2, Camera, MapPin, Video, Users, Clock, RefreshCw, Star, Sha
 import { BookingModal } from '@/components/payment/BookingModal';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { MediaLightbox } from '@/components/shared/MediaLightbox';
+import { Maximize2, Play } from 'lucide-react';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -246,9 +248,18 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 italic tracking-tighter uppercase underline decoration-primary/20 decoration-4 underline-offset-8">Visual Narrative nodes</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                {(data.portfolioImages as string[]).map((img, idx) => (
-                 <div key={idx} className="relative aspect-square rounded-[2rem] overflow-hidden border border-black/5 shadow-sm hover:shadow-xl transition-all duration-500 group">
-                    <Image src={img} alt={`Work ${idx}`} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                 </div>
+                 <MediaLightbox 
+                    key={idx} 
+                    mediaUrl={img} 
+                    trigger={
+                      <div className="relative aspect-square rounded-[2rem] overflow-hidden border border-black/5 shadow-sm hover:shadow-xl transition-all duration-500 group">
+                        <Image src={img} alt={`Work ${idx}`} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                           <Maximize2 className="text-white w-8 h-8" />
+                        </div>
+                      </div>
+                    }
+                 />
                ))}
             </div>
           </div>
@@ -260,15 +271,26 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 italic tracking-tighter uppercase underline decoration-secondary/20 decoration-4 underline-offset-8">Motion Narrative Nodes</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                {(data.portfolioVideos as string[]).map((vid, idx) => (
-                 <div key={idx} className="relative aspect-video rounded-[3rem] overflow-hidden border border-black/5 shadow-sm hover:shadow-2xl transition-all duration-500 group bg-black">
-                    <video 
-                      src={vid} 
-                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
-                      controls 
-                      muted={false} 
-                      loop 
-                    />
-                 </div>
+                 <MediaLightbox 
+                    key={idx} 
+                    mediaUrl={vid} 
+                    isVideo
+                    trigger={
+                      <div className="relative aspect-video rounded-[3rem] overflow-hidden border border-black/5 shadow-sm hover:shadow-2xl transition-all duration-500 group bg-black">
+                        <video 
+                          src={vid} 
+                          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
+                          muted 
+                          loop 
+                        />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-all">
+                           <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform">
+                              <Play className="text-white fill-white w-8 h-8 ml-1" />
+                           </div>
+                        </div>
+                      </div>
+                    }
+                 />
                ))}
             </div>
           </div>
