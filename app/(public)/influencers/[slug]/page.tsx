@@ -7,7 +7,7 @@ import { eq, and } from 'drizzle-orm';
 import { getOptimizedUrl } from '@/lib/cloudinary';
 import { StarRating } from '@/components/shared/StarRating';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, Camera, MapPin, Video, Users, Clock, RefreshCw } from 'lucide-react';
+import { CheckCircle2, Camera, MapPin, Video, Users, Clock, RefreshCw, Star, Share2 } from 'lucide-react';
 import { BookingModal } from '@/components/payment/BookingModal';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -55,6 +55,8 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
       rating: influencerProfiles.averageRating,
       isVerified: influencerProfiles.isVerifiedBadge,
       totalReach: influencerProfiles.totalReach,
+      portfolioImages: influencerProfiles.portfolioImages,
+      portfolioVideos: influencerProfiles.portfolioVideos,
     })
     .from(influencerProfiles)
     .innerJoin(users, eq(influencerProfiles.userId, users.id))
@@ -145,29 +147,59 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
             </div>
 
             {/* Social Ecosystem Footprint Grid */}
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {platforms.map((plat) => (
-                    <div key={plat.id} className="bg-white p-6 rounded-[2rem] border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group">
-                         <div className="flex items-center justify-between mb-4">
-                            <span className="text-2xl grayscale group-hover:grayscale-0 transition-all">{plat.icon}</span>
-                            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60 italic">{plat.label}</span>
-                         </div>
-                         <div className="grid grid-cols-2 gap-y-4">
-                            <div>
-                                <p className="text-[9px] font-black opacity-50 uppercase tracking-tighter">Followers</p>
-                                <p className="text-xl font-black italic text-gray-900 tracking-tight">
-                                    {(metrics[plat.id]?.followers / 1000).toFixed(1) || '0.0'}K
-                                </p>
-                            </div>
-                            <div className="text-right">
-                                <p className="text-[9px] font-black opacity-50 uppercase tracking-tighter">Views</p>
-                                <p className="text-xl font-black italic text-gray-900 tracking-tight">
-                                    {(metrics[plat.id]?.views / 1000).toFixed(1) || '0.0'}K
-                                </p>
-                            </div>
-                         </div>
-                    </div>
-                ))}
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {platforms.map((plat) => {
+                    const platformMetrics = metrics[plat.id] || { followers: 0, views: 0, likes: 0, comments: 0 };
+                    return (
+                        <div key={plat.id} className="bg-white p-8 rounded-[2.5rem] border border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden">
+                             {/* Background Accent */}
+                             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-primary/10 transition-colors" />
+                             
+                             <div className="flex items-center justify-between mb-8 relative z-10">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform bg-white border border-black/5 overflow-hidden">
+                                        <Image
+                                            src={`https://cdn.simpleicons.org/${plat.id === 'x' ? 'x' : plat.id}/${
+                                                plat.id === 'instagram' ? 'E4405F' : 
+                                                plat.id === 'youtube' ? 'FF0000' : 
+                                                plat.id === 'facebook' ? '1877F2' : 
+                                                '000000'
+                                            }`}
+                                            alt={plat.label}
+                                            width={32}
+                                            height={32}
+                                            className="opacity-80 group-hover:opacity-100 transition-opacity"
+                                        />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xl font-black italic tracking-tighter uppercase">{plat.label}</h4>
+                                        <a href={plat.handle?.startsWith('http') ? plat.handle : `https://${plat.id}.com/${plat.handle}`} target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold text-primary hover:underline italic flex items-center gap-1">
+                                            Visit Node <span className="text-xs">&rarr;</span>
+                                        </a>
+                                    </div>
+                                </div>
+                             </div>
+
+                             <div className="grid grid-cols-2 gap-6 relative z-10">
+                                {[
+                                    { label: 'Followers', value: platformMetrics.followers, icon: <Users className="w-3 h-3" /> },
+                                    { label: 'Avg Views', value: platformMetrics.views, icon: <Video className="w-3 h-3" /> },
+                                    { label: 'Avg Likes', value: platformMetrics.likes, icon: <Star className="w-3 h-3" /> },
+                                    { label: 'Comments', value: platformMetrics.comments, icon: <RefreshCw className="w-3 h-3" /> }
+                                ].map((m) => (
+                                    <div key={m.label} className="bg-gray-50/50 p-4 rounded-2xl border border-black/5">
+                                        <p className="text-[9px] font-black opacity-40 uppercase tracking-widest flex items-center gap-1.5 mb-1.5 italic">
+                                            {m.icon} {m.label}
+                                        </p>
+                                        <p className="text-2xl font-black italic text-gray-900 tracking-tight">
+                                            {Number(m.value) >= 1000 ? (Number(m.value) / 1000).toFixed(1) + 'K' : m.value}
+                                        </p>
+                                    </div>
+                                ))}
+                             </div>
+                        </div>
+                    );
+                })}
             </div>
 
             {/* Bio Section */}
@@ -218,6 +250,20 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
             </div>
           )}
         </div>
+
+        {/* Media Portfolio Section */}
+        {data.portfolioImages && (data.portfolioImages as string[]).length > 0 && (
+          <div className="mt-10 px-2 lg:px-0">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 italic tracking-tighter uppercase underline decoration-primary/20 decoration-4 underline-offset-8">Visual Narrative nodes</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+               {(data.portfolioImages as string[]).map((img, idx) => (
+                 <div key={idx} className="relative aspect-square rounded-[2rem] overflow-hidden border border-black/5 shadow-sm hover:shadow-xl transition-all duration-500 group">
+                    <Image src={img} alt={`Work ${idx}`} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
 
         {/* Reviews Section Placeholder */}
         <div className="mt-10 mb-10">

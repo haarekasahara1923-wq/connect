@@ -144,3 +144,134 @@ export async function updateProfile(formData: {
     return { success: false, error: 'Failed to update profile' };
   }
 }
+
+export async function addService(data: {
+  serviceType: any;
+  title: string;
+  description: string;
+  price: number;
+  deliveryDays: number;
+  revisionsIncluded: number;
+}) {
+  const session = await auth();
+  if (!session?.user?.id || session.user.role !== 'influencer') {
+    return { success: false, error: 'Unauthorized' };
+  }
+
+  try {
+    const [profile] = await db.select({ id: influencerProfiles.id, slug: influencerProfiles.slug })
+      .from(influencerProfiles)
+      .where(eq(influencerProfiles.userId, session.user.id));
+
+    if (!profile) return { success: false, error: 'Profile not found' };
+
+    await db.insert(services).values({
+      influencerId: profile.id,
+      ...data,
+      price: data.price.toString() as any,
+    });
+
+    revalidatePath(`/influencer/services`);
+    revalidatePath(`/influencers/${profile.slug}`);
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: 'Failed to add service' };
+  }
+}
+
+export async function deleteService(serviceId: string) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: 'Unauthorized' };
+
+  try {
+    await db.delete(services).where(eq(services.id, serviceId));
+    revalidatePath(`/influencer/services`);
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: 'Failed to delete service' };
+  }
+}
+
+export async function updatePortfolio(data: { images?: string[], videos?: string[] }) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: 'Unauthorized' };
+
+  try {
+    const [profile] = await db.select({ id: influencerProfiles.id, slug: influencerProfiles.slug })
+      .from(influencerProfiles)
+      .where(eq(influencerProfiles.userId, session.user.id));
+
+    if (!profile) return { success: false, error: 'Profile not found' };
+
+    await db.update(influencerProfiles)
+      .set({
+        portfolioImages: data.images,
+        portfolioVideos: data.videos,
+      })
+      .where(eq(influencerProfiles.id, profile.id));
+
+    revalidatePath(`/influencer/media`);
+    revalidatePath(`/influencers/${profile.slug}`);
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: 'Failed to update portfolio' };
+  }
+}
+
+export async function generateAIBio(prompt: string) {
+  // Simulated AI Bio Generation logic
+  const versions = [
+    {
+      type: 'Professional',
+      content: `I am a dedicated content creator specializing in ${prompt}. With a focus on high-quality production and strategic brand alignment, I help businesses reach their target audience effectively. My approach is data-driven, ensuring maximum ROI for every collaboration. Let's build something great together.`
+    },
+    {
+      type: 'Creative',
+      content: `Visual storyteller and vibe Curator. 🎨 I turn ${prompt} into digital art that resonates. I don't just post; I create experiences that capture the imagination. My community is built on authenticity and shared passion for aesthetic excellence. Join me on this journey of creative exploration.`
+    },
+    {
+      type: 'Artistic',
+      content: `Capturing the soul of ${prompt} through a poetic lens. 🎭 Every frame is a narrative, every caption a conversation. I believe in the power of artistic expression to transcend the ordinary. If you're looking for a collaboration that feels like a masterpiece, you've found your muse. ✨`
+    }
+  ];
+
+  return { success: true, versions };
+}
+
+export async function getServices() {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: 'Unauthorized' };
+
+  try {
+    const [profile] = await db.select({ id: influencerProfiles.id })
+      .from(influencerProfiles)
+      .where(eq(influencerProfiles.userId, session.user.id));
+
+    if (!profile) return { success: false, error: 'Profile not found' };
+
+    const data = await db.select().from(services).where(eq(services.influencerId, profile.id));
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, error: 'Failed to fetch services' };
+  }
+}
+
+export async function getPortfolio() {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: 'Unauthorized' };
+
+  try {
+    const [profile] = await db.select({ 
+      portfolioImages: influencerProfiles.portfolioImages,
+      portfolioVideos: influencerProfiles.portfolioVideos
+    })
+      .from(influencerProfiles)
+      .where(eq(influencerProfiles.userId, session.user.id));
+
+    if (!profile) return { success: false, error: 'Profile not found' };
+
+    return { success: true, data: profile };
+  } catch (error) {
+    return { success: false, error: 'Failed' };
+  }
+}

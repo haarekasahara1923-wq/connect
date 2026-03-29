@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Star, CheckCircle2, Camera, Video, MapPin } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { getOptimizedUrl } from '@/lib/cloudinary';
+import { Star, CheckCircle2, Camera, MapPin } from 'lucide-react';
 
 interface InfluencerCardProps {
   id: string;
@@ -19,68 +17,70 @@ interface InfluencerCardProps {
 
 export function InfluencerCard({ inf }: { inf: InfluencerCardProps }) {
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1">
-      <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
-        <Link href={`/influencers/${inf.slug}`}>
+    <Link href={`/influencers/${inf.slug}`}>
+      <div className="group relative bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full transform hover:-translate-y-2">
+        {/* Top Floating Badge - Price */}
+        <div className="absolute top-4 right-4 z-20 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-xl border border-white/50 group-hover:bg-red-600 group-hover:text-white transition-all duration-500">
+           <p className="text-[10px] uppercase tracking-widest font-black opacity-60 group-hover:opacity-100">Starts at</p>
+           <p className="font-black text-lg italic">₹{inf.minPrice || '500'}</p>
+        </div>
+
+        {/* Hero Image */}
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-100">
           <Image 
             src={inf.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(inf.name)}&background=F3F4F6&color=4B5563`} 
             alt={inf.name} 
             fill 
-            className="object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer"
+            className="object-cover group-hover:scale-110 transition-transform duration-1000"
           />
-        </Link>
-        {inf.isVerified && (
-          <div className="absolute top-3 right-3 bg-blue-500 text-white rounded-full p-1 shadow-md">
-            <CheckCircle2 className="w-4 h-4" />
-          </div>
-        )}
-        <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-semibold shadow-sm flex items-center border border-gray-100/50">
-          <Star className="w-3.5 h-3.5 text-yellow-500 mr-1 fill-yellow-500" />
-          {Number(inf.rating) > 0 ? Number(inf.rating).toFixed(1) : 'New'}
-        </div>
-      </div>
-      
-      <div className="p-5 flex flex-col flex-grow">
-        <div className="flex justify-between items-start mb-1">
-          <Link href={`/influencers/${inf.slug}`}>
-            <h3 className="font-bold text-lg text-gray-900 group-hover:text-red-600 transition-colors line-clamp-1 cursor-pointer">{inf.name}</h3>
-          </Link>
-        </div>
-        
-        <p className="text-sm text-gray-500 mb-3 flex items-center font-medium">
-          <MapPin className="w-3.5 h-3.5 mr-1" />
-          {inf.city}
-        </p>
-        
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {inf.categories && inf.categories.slice(0, 2).map((cat: string) => (
-            <span key={cat} className="text-xs bg-red-50 text-red-700 font-medium px-2 py-1 rounded-md capitalize border border-red-100">
-              {cat}
-            </span>
-          ))}
-          {inf.categories && inf.categories.length > 2 && (
-            <span className="text-xs bg-gray-50 text-gray-600 font-medium px-2 py-1 rounded-md">+{inf.categories.length - 2}</span>
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          
+          {inf.isVerified && (
+            <div className="absolute top-4 left-4 bg-blue-500 text-white rounded-full p-1.5 shadow-lg">
+              <CheckCircle2 className="w-4 h-4" />
+            </div>
           )}
         </div>
         
-        <div className="mt-auto pt-4 border-t flex items-center justify-between">
-          <div>
-            <p className="text-[10px] uppercase tracking-wider font-bold text-gray-400 mb-0.5 flex items-center"><Camera className="w-3 h-3 mr-1"/> Fol</p>
-            <p className="font-black text-secondary">{(inf.followers / 1000).toFixed(1)}K</p>
-          </div>
-          <div>
-             <p className="text-[10px] uppercase tracking-wider font-bold text-gray-400 mb-0.5 text-right">Starts at</p>
-             <p className="font-black text-red-600">₹{inf.minPrice || '500'}</p>
-          </div>
-        </div>
+        {/* Content Section */}
+        <div className="p-6 flex flex-col items-center text-center">
+            <h3 className="font-black text-2xl text-gray-900 group-hover:text-red-600 transition-colors italic tracking-tighter uppercase leading-none mb-2">
+                {inf.name}
+            </h3>
+            
+            <div className="flex items-center gap-3 mb-4">
+               <div className="flex items-center text-xs font-bold text-gray-500 italic">
+                  <MapPin className="w-3.5 h-3.5 mr-1 text-red-500" />
+                  {inf.city}
+               </div>
+               <div className="w-1.5 h-1.5 bg-gray-200 rounded-full" />
+               <div className="flex items-center bg-yellow-400/10 px-2 py-0.5 rounded-full text-[10px] font-black text-yellow-600 italic">
+                  <Star className="w-3 h-3 mr-1 fill-yellow-600" />
+                  {Number(inf.rating) > 0 ? Number(inf.rating).toFixed(1) : 'NEW'}
+               </div>
+            </div>
 
-        {/* Hover Action */}
-        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-white/90 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex items-center justify-center p-3 border-t backdrop-blur-sm -z-10 group-hover:z-10">
-           <Link href={`/influencers/${inf.slug}`} className="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl shadow-lg shadow-red-500/20 inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors">
-              View Profile &rarr;
-           </Link>
+            <div className="flex flex-wrap justify-center gap-1.5 mb-6">
+                {(inf.categories || []).slice(0, 3).map((cat) => (
+                    <span key={cat} className="text-[9px] font-black uppercase tracking-widest bg-gray-50 text-gray-400 border border-gray-100 px-2.5 py-1 rounded-full group-hover:border-red-100 group-hover:text-red-500 transition-colors">
+                        {cat}
+                    </span>
+                ))}
+            </div>
+
+            <div className="w-full pt-4 border-t border-gray-50 flex items-center justify-between mt-auto">
+                <div className="text-left">
+                    <p className="text-[10px] font-black opacity-40 uppercase tracking-tighter italic">Ecosystem Reach</p>
+                    <p className="text-xl font-black italic text-gray-900 group-hover:text-red-600 transition-colors">
+                        {((inf.followers || 0) / 1000).toFixed(1)}K+
+                    </p>
+                </div>
+                <div className="h-10 w-10 rounded-full bg-red-600 flex items-center justify-center text-white scale-0 group-hover:scale-100 transition-transform duration-500 shadow-lg shadow-red-500/40">
+                    &rarr;
+                </div>
+            </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -24,7 +24,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { updateProfile, getMyProfile } from '@/actions/influencer';
 import { INFLUENCER_CATEGORIES, TIER2_CITIES, INDIAN_STATES } from '@/types';
 import { ImageUpload } from '@/components/shared/ImageUpload';
-import { Loader2, Globe } from 'lucide-react';
+import { Loader2, Globe, Sparkles } from 'lucide-react';
+import { AIBioGenerator } from '@/components/influencer/AIBioGenerator';
 
 const profileSchema = z.object({
   bio: z.string().max(500, 'Max 500 characters').optional().or(z.literal('')),
@@ -254,7 +255,10 @@ export default function ProfilePage() {
                   name="bio"
                   render={({ field }) => (
                     <FormItem>
+                    <div className="flex items-center justify-between mb-4">
                       <FormLabel className="font-black text-xs uppercase tracking-widest opacity-70">Brand Synergy Pitch (Bio)</FormLabel>
+                      <AIBioGenerator onSelect={(bio) => field.onChange(bio)} />
+                    </div>
                       <FormControl><Textarea className="resize-none rounded-3xl min-h-[140px] border-border text-xl font-medium p-8 leading-relaxed" placeholder="I help regional brands dominate..." {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
