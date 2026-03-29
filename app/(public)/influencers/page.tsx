@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { db } from '@/lib/db';
-import { influencerProfiles, users } from '@/lib/db/schema';
-import { eq, or, ilike, and, inArray } from 'drizzle-orm';
+import { influencerProfiles, users, services } from '@/lib/db/schema';
+import { eq, or, ilike, and, inArray, sql } from 'drizzle-orm';
 import { FilterPanel } from '@/components/influencer/FilterPanel';
 import { InfluencerCard } from '@/components/influencer/InfluencerCard';
 
@@ -42,14 +42,29 @@ async function InfluencerList({ searchParamsPromise }: { searchParamsPromise: Pr
       photo: users.profileImage,
       city: influencerProfiles.city,
       categories: influencerProfiles.categories,
-      followers: influencerProfiles.totalReach, // Use Total Reach instead of just IG
+      followers: influencerProfiles.totalReach,
       rating: influencerProfiles.averageRating,
       isVerified: influencerProfiles.isVerifiedBadge,
+      portfolioVideos: influencerProfiles.portfolioVideos,
+      minPrice: sql<number>`MIN(${services.price})`.mapWith(Number),
     })
     .from(influencerProfiles)
     .innerJoin(users, eq(influencerProfiles.userId, users.id))
+    .leftJoin(services, and(eq(services.influencerId, influencerProfiles.id), eq(services.isActive, true)))
     .where(and(...conditions))
-    .limit(50); // Pagination in next phase
+    .groupBy(
+        influencerProfiles.id, 
+        influencerProfiles.slug, 
+        users.name, 
+        users.profileImage, 
+        influencerProfiles.city, 
+        influencerProfiles.categories, 
+        influencerProfiles.totalReach, 
+        influencerProfiles.averageRating, 
+        influencerProfiles.isVerifiedBadge,
+        influencerProfiles.portfolioVideos
+    )
+    .limit(50);
 
   // Post-filter logic for categories since Drizzle JSON array overlap is dialect-specific
   const filtered = categories.length > 0 

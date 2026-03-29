@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -37,6 +38,7 @@ interface Service {
 }
 
 export function ServiceManager({ initialServices }: { initialServices: Service[] }) {
+  const router = useRouter();
   const [services, setServices] = useState<Service[]>(initialServices);
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,9 +63,10 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
         serviceType: formData.serviceType as any
       });
 
-      if (res.success) {
+      if (res.success && res.data) {
         toast.success('Service added successfully!');
-        window.location.reload(); // Quick way to sync for now
+        setServices([...services, res.data as any]);
+        router.refresh();
         setIsOpen(false);
       } else {
         toast.error(res.error || 'Failed to add service');

@@ -70,15 +70,15 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
   const metrics = (data.socialMetrics as any) || {};
 
   const platforms = [
-    { id: 'instagram', label: 'Instagram', icon: '📸', handle: data.igHandle },
-    { id: 'youtube', label: 'YouTube', icon: '📺', handle: data.ytHandle },
-    { id: 'facebook', label: 'Facebook', icon: '👥', handle: data.fbHandle },
-    { id: 'telegram', label: 'Telegram', icon: '✈️', handle: data.tgHandle },
-    { id: 'whatsapp', label: 'WhatsApp', icon: '💬', handle: data.waHandle },
-    { id: 'linkedin', label: 'LinkedIn', icon: '💼', handle: data.liHandle },
-    { id: 'snapchat', label: 'Snapchat', icon: '👻', handle: data.scHandle },
-    { id: 'x', label: 'X (Twitter)', icon: '𝕏', handle: data.xHandle },
-    { id: 'threads', label: 'Threads', icon: '🧵', handle: data.trHandle },
+    { id: 'instagram', label: 'Instagram', icon: '📸', handle: data.igHandle, brandColor: 'bg-[#E4405F]' },
+    { id: 'youtube', label: 'YouTube', icon: '📺', handle: data.ytHandle, brandColor: 'bg-[#FF0000]' },
+    { id: 'facebook', label: 'Facebook', icon: '👥', handle: data.fbHandle, brandColor: 'bg-[#1877F2]' },
+    { id: 'telegram', label: 'Telegram', icon: '✈️', handle: data.tgHandle, brandColor: 'bg-[#26A5E4]' },
+    { id: 'whatsapp', label: 'WhatsApp', icon: '💬', handle: data.waHandle, brandColor: 'bg-[#25D366]' },
+    { id: 'linkedin', label: 'LinkedIn', icon: '💼', handle: data.liHandle, brandColor: 'bg-[#0077B5]' },
+    { id: 'snapchat', label: 'Snapchat', icon: '👻', handle: data.scHandle, brandColor: 'bg-[#FFFC00]' },
+    { id: 'x', label: 'X (Twitter)', icon: '𝕏', handle: data.xHandle, brandColor: 'bg-[#000000]' },
+    { id: 'threads', label: 'Threads', icon: '🧵', handle: data.trHandle, brandColor: 'bg-[#000000]' },
   ].filter(p => !!p.handle || (metrics[p.id] && Object.values(metrics[p.id] as object).some(v => Number(v) > 0)));
 
   return (
@@ -144,24 +144,20 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
                 {platforms.map((plat) => {
                     const platformMetrics = metrics[plat.id] || { followers: 0, views: 0, likes: 0, comments: 0 };
                     const iconSlug = plat.id === 'x' ? 'x' : plat.id;
-                    const iconColor = plat.id === 'instagram' ? 'E4405F' : 
-                                     plat.id === 'youtube' ? 'FF0000' : 
-                                     plat.id === 'facebook' ? '1877F2' : 
-                                     '000000';
 
                     return (
                         <div key={plat.id} className="bg-white p-8 rounded-[2.5rem] border border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden">
                              {/* Background Accent */}
-                             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-primary/10 transition-colors" />
+                             <div className={`absolute top-0 right-0 w-32 h-32 ${plat.brandColor} opacity-5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:opacity-10 transition-opacity`} />
                              
                              <div className="flex items-center justify-between mb-8 relative z-10">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform bg-white border border-black/5 overflow-hidden p-3 pt-4">
+                                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform bg-white border border-black/5 overflow-hidden p-3 bg-gradient-to-br from-white to-gray-100">
                                         <img
                                             src={`https://unpkg.com/simple-icons@v11/icons/${iconSlug}.svg`}
                                             alt={plat.label}
-                                            className="w-8 h-8 opacity-70 group-hover:opacity-100 transition-opacity"
-                                            style={{ filter: `invert(1) sepia(1) saturate(5) hue-rotate(${plat.id === 'instagram' ? '300deg' : plat.id === 'youtube' ? '0deg' : '200deg'})` }} // Very rough color filter as SVGs are usually black on unpkg
+                                            className="w-full h-full opacity-70 group-hover:opacity-100 transition-opacity"
+                                            style={{ filter: plat.id === 'instagram' ? 'none' : 'grayscale(1)' }} 
                                         />
                                     </div>
                                     <div>
@@ -252,6 +248,26 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
                {(data.portfolioImages as string[]).map((img, idx) => (
                  <div key={idx} className="relative aspect-square rounded-[2rem] overflow-hidden border border-black/5 shadow-sm hover:shadow-xl transition-all duration-500 group">
                     <Image src={img} alt={`Work ${idx}`} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Video Portfolio Section */}
+        {data.portfolioVideos && (data.portfolioVideos as string[]).length > 0 && (
+          <div className="mt-10 px-2 lg:px-0">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 italic tracking-tighter uppercase underline decoration-secondary/20 decoration-4 underline-offset-8">Motion Narrative Nodes</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               {(data.portfolioVideos as string[]).map((vid, idx) => (
+                 <div key={idx} className="relative aspect-video rounded-[3rem] overflow-hidden border border-black/5 shadow-sm hover:shadow-2xl transition-all duration-500 group bg-black">
+                    <video 
+                      src={vid} 
+                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
+                      controls 
+                      muted={false} 
+                      loop 
+                    />
                  </div>
                ))}
             </div>

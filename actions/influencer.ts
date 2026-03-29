@@ -174,15 +174,15 @@ export async function addService(data: {
 
     if (!profile) return { success: false, error: 'Profile not found' };
 
-    await db.insert(services).values({
+    const [newService] = await db.insert(services).values({
       influencerId: profile.id,
       ...data,
       price: data.price.toFixed(2),
-    });
+    }).returning();
 
     revalidatePath(`/influencer/services`);
     revalidatePath(`/influencers/${profile.slug}`);
-    return { success: true };
+    return { success: true, data: newService };
   } catch (error) {
     console.error('Add Service Error:', error);
     return { success: false, error: error instanceof Error ? error.message : 'Database collision error' };

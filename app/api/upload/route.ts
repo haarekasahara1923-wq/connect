@@ -12,15 +12,18 @@ export async function POST(req: NextRequest) {
 
   if (!file) return NextResponse.json({ error: 'No file provided' }, { status: 400 });
 
-  // Validate file size (max 10MB)
-  if (file.size > 10 * 1024 * 1024) {
-    return NextResponse.json({ error: 'File too large. Max 10MB.' }, { status: 400 });
+  // Validate file size (max 500MB)
+  if (file.size > 500 * 1024 * 1024) {
+    return NextResponse.json({ error: 'File too large. Max 500MB.' }, { status: 400 });
   }
 
   // Validate file type
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'video/mp4'];
+  const allowedTypes = [
+    'image/jpeg', 'image/png', 'image/webp', 'image/gif', 
+    'video/mp4', 'video/quicktime', 'video/webm'
+  ];
   if (!allowedTypes.includes(file.type)) {
-    return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid file type. Allowed: JPG, PNG, WEBP, GIF, MP4, MOV, WEBM.' }, { status: 400 });
   }
 
   try {

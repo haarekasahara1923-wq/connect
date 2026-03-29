@@ -30,8 +30,8 @@ export function ImageUpload({ onUpload, defaultImage, folder = 'general' }: Imag
     const file = acceptedFiles[0];
     if (!file) return;
 
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error('File too large (max 10MB)');
+    if (file.size > 500 * 1024 * 1024) {
+      toast.error('File too large (max 500MB)');
       return;
     }
 
@@ -120,7 +120,7 @@ export function ImageUpload({ onUpload, defaultImage, folder = 'general' }: Imag
           <p className="mb-2 text-sm text-gray-500">
             <span className="font-semibold text-primary">Click to upload</span> or drag and drop
           </p>
-          <p className="text-xs text-gray-500 uppercase font-black italic">Images or Videos (MP4/MOV) MAX. 10MB</p>
+          <p className="text-xs text-gray-500 uppercase font-black italic">Images or Videos (MP4/MOV) MAX. 500MB</p>
         </div>
       )}
     </div>
