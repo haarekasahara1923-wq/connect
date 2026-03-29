@@ -67,6 +67,8 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
   // Fetch Services
   const offeredServices = await db.select().from(services).where(and(eq(services.influencerId, data.id), eq(services.isActive, true)));
 
+  const metrics = (data.socialMetrics as any) || {};
+
   const platforms = [
     { id: 'instagram', label: 'Instagram', icon: '📸', handle: data.igHandle },
     { id: 'youtube', label: 'YouTube', icon: '📺', handle: data.ytHandle },
@@ -77,9 +79,7 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
     { id: 'snapchat', label: 'Snapchat', icon: '👻', handle: data.scHandle },
     { id: 'x', label: 'X (Twitter)', icon: '𝕏', handle: data.xHandle },
     { id: 'threads', label: 'Threads', icon: '🧵', handle: data.trHandle },
-  ].filter(p => !!p.handle);
-
-  const metrics = (data.socialMetrics as any) || {};
+  ].filter(p => !!p.handle || (metrics[p.id] && Object.values(metrics[p.id] as object).some(v => Number(v) > 0)));
 
   return (
     <div className="bg-gray-50 min-h-screen pb-24">
@@ -139,17 +139,16 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
               </div>
             </div>
 
-            {/* Global Reach Highlight */}
-            <div className="mt-16 p-10 bg-gradient-to-tr from-primary/5 to-secondary/5 rounded-[2.5rem] border border-primary/10 flex flex-col items-center justify-center text-center">
-                <h3 className="text-sm font-black uppercase tracking-[0.3em] text-primary/60 mb-2">Authenticated Global Reach</h3>
-                <span className="text-6xl md:text-8xl font-black italic tracking-tighter text-primary">{((data.totalReach || 0) / 1000).toFixed(1)}K+</span>
-                <p className="text-muted-foreground font-bold italic mt-2 italic px-2">Aggregated active nodes across the influencer ecosystem.</p>
-            </div>
-
             {/* Social Ecosystem Footprint Grid */}
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {platforms.map((plat) => {
                     const platformMetrics = metrics[plat.id] || { followers: 0, views: 0, likes: 0, comments: 0 };
+                    const iconSlug = plat.id === 'x' ? 'x' : plat.id;
+                    const iconColor = plat.id === 'instagram' ? 'E4405F' : 
+                                     plat.id === 'youtube' ? 'FF0000' : 
+                                     plat.id === 'facebook' ? '1877F2' : 
+                                     '000000';
+
                     return (
                         <div key={plat.id} className="bg-white p-8 rounded-[2.5rem] border border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden">
                              {/* Background Accent */}
@@ -157,18 +156,12 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
                              
                              <div className="flex items-center justify-between mb-8 relative z-10">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform bg-white border border-black/5 overflow-hidden">
-                                        <Image
-                                            src={`https://cdn.simpleicons.org/${plat.id === 'x' ? 'x' : plat.id}/${
-                                                plat.id === 'instagram' ? 'E4405F' : 
-                                                plat.id === 'youtube' ? 'FF0000' : 
-                                                plat.id === 'facebook' ? '1877F2' : 
-                                                '000000'
-                                            }`}
+                                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform bg-white border border-black/5 overflow-hidden p-3 pt-4">
+                                        <img
+                                            src={`https://unpkg.com/simple-icons@v11/icons/${iconSlug}.svg`}
                                             alt={plat.label}
-                                            width={32}
-                                            height={32}
-                                            className="opacity-80 group-hover:opacity-100 transition-opacity"
+                                            className="w-8 h-8 opacity-70 group-hover:opacity-100 transition-opacity"
+                                            style={{ filter: `invert(1) sepia(1) saturate(5) hue-rotate(${plat.id === 'instagram' ? '300deg' : plat.id === 'youtube' ? '0deg' : '200deg'})` }} // Very rough color filter as SVGs are usually black on unpkg
                                         />
                                     </div>
                                     <div>

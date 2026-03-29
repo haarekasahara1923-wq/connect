@@ -24,6 +24,7 @@ import {
 import { PlusCircle, Trash2, Edit2, Clock, RefreshCw, Loader2 } from 'lucide-react';
 import { addService, deleteService } from '@/actions/influencer';
 import { toast } from 'sonner';
+import { AIServiceGenerator } from './AIServiceGenerator';
 
 interface Service {
   id: string;
@@ -144,7 +145,10 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest opacity-60 italic">Description</label>
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] font-black uppercase tracking-widest opacity-60 italic">Description</label>
+                  <AIServiceGenerator onSelect={(v) => setFormData({...formData, description: v})} serviceName={formData.title || 'Service Node'} />
+                </div>
                 <Textarea 
                     placeholder="Describe what's included..." 
                     className="rounded-2xl border-black/10 min-h-[100px] font-medium italic" 
