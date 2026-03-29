@@ -159,6 +159,10 @@ export async function addService(data: {
   }
 
   try {
+    if (isNaN(data.price) || data.price <= 0) {
+      return { success: false, error: 'Invalid price amount' };
+    }
+
     const [profile] = await db.select({ id: influencerProfiles.id, slug: influencerProfiles.slug })
       .from(influencerProfiles)
       .where(eq(influencerProfiles.userId, session.user.id));
@@ -168,14 +172,15 @@ export async function addService(data: {
     await db.insert(services).values({
       influencerId: profile.id,
       ...data,
-      price: data.price.toString() as any,
+      price: data.price.toFixed(2),
     });
 
     revalidatePath(`/influencer/services`);
     revalidatePath(`/influencers/${profile.slug}`);
     return { success: true };
   } catch (error) {
-    return { success: false, error: 'Failed to add service' };
+    console.error('Add Service Error:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Database collision error' };
   }
 }
 
