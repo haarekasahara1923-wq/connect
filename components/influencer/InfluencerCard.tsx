@@ -23,7 +23,7 @@ export function InfluencerCard({ inf }: { inf: InfluencerCardProps }) {
       <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
         <Link href={`/influencers/${inf.slug}`}>
           <Image 
-            src={inf.photo || 'https://ui-avatars.com/api/?name=Influencer&background=F3F4F6&color=4B5563'} 
+            src={inf.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(inf.name)}&background=F3F4F6&color=4B5563`} 
             alt={inf.name} 
             fill 
             className="object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer"

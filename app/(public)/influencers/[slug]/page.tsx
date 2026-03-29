@@ -99,7 +99,7 @@ export default async function InfluencerPublicProfile({ params }: { params: Prom
               {/* Profile Photo over Cover */}
               <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-[3rem] border-8 border-white overflow-hidden shadow-2xl bg-white shrink-0 -mt-24 md:-mt-32 transform rotate-3 group hover:rotate-0 transition-all duration-700">
                 <Image 
-                  src={data.photo || 'https://ui-avatars.com/api/?name=Influencer&background=F3F4F6&color=4B5563'} 
+                  src={data.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name)}&background=F3F4F6&color=4B5563`} 
                   alt={data.name || ''} 
                   fill 
                   className="object-cover"

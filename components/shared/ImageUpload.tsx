@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { UploadCloud, X, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -15,6 +15,13 @@ interface ImageUploadProps {
 export function ImageUpload({ onUpload, defaultImage, folder = 'general' }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(defaultImage || null);
+
+  // Sync preview with defaultImage when it changes (e.g. after form reset)
+  useEffect(() => {
+    if (defaultImage !== undefined) {
+      setPreview(defaultImage || null);
+    }
+  }, [defaultImage]);
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];

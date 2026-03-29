@@ -126,14 +126,17 @@ export async function updateProfile(formData: {
       })
       .where(eq(influencerProfiles.id, existing.id));
 
-    if (data.profilePhoto) {
+    if (data.profilePhoto !== undefined) {
       await db.update(users)
         .set({ profileImage: data.profilePhoto })
         .where(eq(users.id, session.user.id));
     }
 
     await deleteCache(`influencer:profile:${existing.slug}`);
+    await deleteCache('influencers:featured');
+    
     revalidatePath('/influencer/profile');
+    revalidatePath('/influencers');
     revalidatePath(`/influencers/${existing.slug}`);
 
     return { success: true };
