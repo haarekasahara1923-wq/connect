@@ -98,6 +98,9 @@ export async function updateProfile(formData: {
 
     if (!existing) return { success: false, error: 'Profile not found' };
 
+    // Ensure metrics keys are consistent
+    const cleanedMetrics = data.socialMetrics || {};
+
     await db.update(influencerProfiles)
       .set({
         bio: data.bio,
@@ -119,9 +122,9 @@ export async function updateProfile(formData: {
         xHandle: data.xHandle,
         threadsHandle: data.threadsHandle,
         address: data.address,
-        socialMetrics: data.socialMetrics,
+        socialMetrics: cleanedMetrics,
         coverImage: data.coverImage,
-        totalReach: (data.instagramFollowers || 0) + (data.youtubeSubscribers || 0) + (data.facebookFollowers || 0),
+        totalReach: (Number(data.instagramFollowers) || 0) + (Number(data.youtubeSubscribers) || 0) + (Number(data.facebookFollowers) || 0),
         updatedAt: new Date(),
       })
       .where(eq(influencerProfiles.id, existing.id));
@@ -138,10 +141,12 @@ export async function updateProfile(formData: {
     revalidatePath('/influencer/profile');
     revalidatePath('/influencers');
     revalidatePath(`/influencers/${existing.slug}`);
+    revalidatePath(`/influencers/${existing.slug}`, 'page');
 
     return { success: true };
   } catch (error) {
-    return { success: false, error: 'Failed to update profile' };
+    console.error('Update Profile Error:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Database sync error' };
   }
 }
 
