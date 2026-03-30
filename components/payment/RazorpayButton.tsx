@@ -43,8 +43,20 @@ export function RazorpayButton({ serviceId, influencerId, brief, deadline, servi
       });
       
       const orderData = await res.json();
-      if (!res.ok) throw new Error(orderData.error);
-
+      if (!res.ok) {
+        if (res.status === 401) {
+          toast.error(orderData.error || 'Please log in to book services');
+          router.push('/login');
+          setLoading(false);
+          return;
+        }
+        if (res.status === 403) {
+          toast.error(orderData.error || 'Only Brands can book services');
+          setLoading(false);
+          return;
+        }
+        throw new Error(orderData.error || 'Failed to create order');
+      }
       // 2. Load Razorpay script dynamically
       const isLoaded = await loadRazorpayScript();
       if (!isLoaded) {

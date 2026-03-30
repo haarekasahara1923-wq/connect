@@ -7,8 +7,11 @@ import { eq } from 'drizzle-orm';
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  if (!session || session.user.role !== 'brand') {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!session) {
+    return NextResponse.json({ error: 'Please log in to book services' }, { status: 401 });
+  }
+  if (session.user.role !== 'brand') {
+    return NextResponse.json({ error: 'Only Brands can book services' }, { status: 403 });
   }
 
   try {
