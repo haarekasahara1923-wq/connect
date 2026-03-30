@@ -48,8 +48,8 @@ export function BookingModal({ service, influencerId }: BookingModalProps) {
           </Button>
         }
       />
-      <DialogContent className="sm:max-w-[500px] border-none shadow-2xl p-0 overflow-hidden bg-white">
-        <DialogHeader className="bg-gradient-to-br from-red-50 to-orange-50 p-6 md:p-8">
+      <DialogContent className="sm:max-w-[500px] border-none shadow-2xl p-0 overflow-y-auto max-h-[90vh] overflow-x-hidden bg-white">
+        <DialogHeader className="bg-gradient-to-br from-red-50 to-orange-50 p-6 md:p-8 shrink-0">
           <DialogTitle className="text-2xl font-black text-gray-900 flex items-center gap-2">
             Confirm Booking
           </DialogTitle>
@@ -114,7 +114,7 @@ export function BookingModal({ service, influencerId }: BookingModalProps) {
           </div>
         </div>
 
-        <DialogFooter className="p-6 md:p-8 pt-0 flex flex-col gap-4">
+        <DialogFooter className="p-6 md:p-8 pt-0 flex flex-col gap-4 shrink-0">
            {isReady ? (
              <RazorpayButton 
                 serviceId={service.id} 
