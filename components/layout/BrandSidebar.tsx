@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { 
   LayoutDashboard, 
+  UserCircle,
   Search, 
   Megaphone, 
   Wallet, 
@@ -16,6 +17,7 @@ import { signOut } from 'next-auth/react';
 
 const links = [
   { name: 'Dashboard', href: '/brand/dashboard', icon: LayoutDashboard },
+  { name: 'Profile', href: '/brand/profile', icon: UserCircle },
   { name: 'Discover', href: '/brand/discover', icon: Search },
   { name: 'Campaigns', href: '/brand/campaigns', icon: Megaphone },
   { name: 'Bookings', href: '/brand/bookings', icon: CalendarCheck },

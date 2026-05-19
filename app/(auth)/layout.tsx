@@ -1,7 +1,24 @@
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import { auth } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
+export default async function AuthLayout({ children }: { children: ReactNode }) {
+  const session = await auth();
+  
+  if (session?.user) {
+    const role = (session.user as any).role;
+    if (role === 'brand') {
+      redirect('/brand/dashboard');
+    } else if (role === 'influencer') {
+      redirect('/influencer/dashboard');
+    } else if (role === 'admin') {
+      redirect('/admin/dashboard');
+    } else {
+      redirect('/');
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
